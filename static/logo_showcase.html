@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reelbox — Brand & Logo Showcase</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #09090b;
+      color: #f4f4f5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 40px 24px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1040px; margin: 0 auto; }
+    header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 40%, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    header p { color: #a1a1aa; font-size: 16px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .card {
+      background: #141419;
+      border: 1px solid #272730;
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #8b5cf6;
+    }
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+    .card p.desc {
+      font-size: 13px;
+      color: #71717a;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .preview-box {
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 30px rgba(124, 58, 237, 0.25));
+    }
+
+    /* Simulators */
+    .sim-telegram {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid #334155;
+    }
+    .sim-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid #8b5cf6;
+    }
+    .sim-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .sim-info .name { font-size: 15px; font-weight: 700; color: #fff; }
+    .sim-info .sub { font-size: 12px; color: #38bdf8; }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: auto;
+    }
+    .btn {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.15s;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      opacity: 0.92;
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+    }
+    .btn-outline {
+      background: #1f1f28;
+      color: #e4e4e7;
+      border: 1px solid #3f3f4e;
+    }
+    .btn-outline:hover { background: #2a2a38; }
+
+    .banner-card {
+      background: #141419;
+      border: 1px solid #272730;
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+    }
+    .banner-preview {
+      max-width: 540px;
+      margin: 20px auto;
+      background: #0c0b12;
+      padding: 24px;
+      border-radius: 14px;
+      border: 1px solid #272730;
+    }
+    .banner-preview img { width: 100%; height: auto; display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Reelbox Brand Assets</h1>
+      <p>High-resolution logo designs tailored for Telegram avatar, app icons &amp; web dashboard</p>
+    </header>
+
+    <div class="grid">
+      <!-- Option A -->
+      <div class="card">
+        <h3>Option 1: 3D Vault Ribbon</h3>
+        <p class="desc">Isometric glass vault + radiant film reel play glyph</p>
+        
+        <div class="preview-box">
+          <img id="imgOpt1" src="logo_icon.svg" alt="Option 1">
+        </div>
+
+        <!-- Telegram Preview -->
+        <div class="sim-telegram">
+          <div class="sim-avatar">
+            <img src="logo_icon.svg" alt="Avatar">
+          </div>
+          <div class="sim-info">
+            <div class="name">Reelbox</div>
+            <div class="sub">bot • @ReelboxxBot</div>
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin-top: 20px;">
+          <button class="btn btn-primary" onclick="downloadPNG('logo_icon.svg', 'Reelbox_Avatar_Option1.png')">
+            ⬇️ Download PNG (512px)
+          </button>
+          <a href="logo_icon.svg" download="Reelbox_Option1.svg" class="btn btn-outline">SVG</a>
+        </div>
+      </div>
+
+      <!-- Option B -->
+      <div class="card">
+        <h3>Option 2: Minimalist Monogram</h3>
+        <p class="desc">Modern geometric 'R' archive box with neon gradient</p>
+        
+        <div class="preview-box">
+          <img id="imgOpt2" src="logo_minimal.svg" alt="Option 2">
+        </div>
+
+        <!-- Telegram Preview -->
+        <div class="sim-telegram">
+          <div class="sim-avatar">
+            <img src="logo_minimal.svg" alt="Avatar">
+          </div>
+          <div class="sim-info">
+            <div class="name">Reelbox</div>
+            <div class="sub">bot • @ReelboxxBot</div>
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin-top: 20px;">
+          <button class="btn btn-primary" onclick="downloadPNG('logo_minimal.svg', 'Reelbox_Avatar_Option2.png')">
+            ⬇️ Download PNG (512px)
+          </button>
+          <a href="logo_minimal.svg" download="Reelbox_Option2.svg" class="btn btn-outline">SVG</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header Logo Banner -->
+    <div class="banner-card">
+      <h3>Horizontal Brand Lockup</h3>
+      <p style="color: #71717a; font-size: 14px; margin-top: 4px;">Use for websites, docs, social media headers &amp; GitHub</p>
+      
+      <div class="banner-preview">
+        <img src="logo_lockup.svg" alt="Reelbox Lockup">
+      </div>
+
+      <a href="logo_lockup.svg" download="Reelbox_Lockup.svg" class="btn btn-outline" style="display: inline-block; padding: 10px 24px; margin-top: 8px;">
+        ⬇️ Download Lockup SVG
+      </a>
+    </div>
+  </div>
+
+  <canvas id="exportCanvas" width="512" height="512" style="display:none;"></canvas>
+
+  <script>
+    function downloadPNG(svgFile, filename) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.getElementById('exportCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 512, 512);
+        ctx.drawImage(img, 0, 0, 512, 512);
+        
+        const a = document.createElement('a');
+        a.download = filename;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      };
+      img.src = svgFile;
+    }
+  </script>
+</body>
+</html>

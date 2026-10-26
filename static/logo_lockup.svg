@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" width="640" height="160">
+  <defs>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="55%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left Icon Mark (scaled) -->
+  <g transform="translate(16, 16) scale(0.25)">
+    <rect width="512" height="512" rx="115" fill="#141124" stroke="#7c3aed" stroke-width="6" stroke-opacity="0.4" />
+    <!-- Isometric Cube -->
+    <path d="M 145 235 L 256 300 L 256 385 L 145 320 Z" fill="#4338ca" opacity="0.6" />
+    <path d="M 256 300 L 367 235 L 367 320 L 256 385 Z" fill="#7c3aed" opacity="0.6" />
+    <path d="M 256 170 L 367 235 L 256 300 L 145 235 Z" fill="#a855f7" opacity="0.4" stroke="#fff" stroke-width="4" stroke-opacity="0.5" />
+    <!-- Reel Ribbon -->
+    <path d="M 130 210 C 130 130, 210 100, 290 110 C 375 120, 395 185, 370 250 C 345 315, 275 350, 205 345" 
+          fill="none" stroke="url(#brandGrad)" stroke-width="32" stroke-linecap="round" />
+    <!-- Play Triangle -->
+    <polygon points="248,222 288,252 248,282" fill="#ffffff" />
+  </g>
+
+  <!-- Typography -->
+  <text x="170" y="92" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif" font-size="64" font-weight="800" fill="url(#textGrad)" letter-spacing="-1.5">
+    Reel<tspan fill="#8b5cf6">box</tspan>
+  </text>
+  <text x="174" y="124" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif" font-size="14" font-weight="600" fill="#71717a" letter-spacing="3.5">
+    AI BOOKMARK ENGINE
+  </text>
+</svg>

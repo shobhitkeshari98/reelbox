@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#1f1838" />
+      <stop offset="50%" stop-color="#100d1e" />
+      <stop offset="100%" stop-color="#07060c" />
+    </radialGradient>
+
+    <!-- Neon Accents -->
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+
+    <linearGradient id="boxTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03" />
+    </linearGradient>
+
+    <linearGradient id="boxFaceLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#4338ca" stop-opacity="0.15" />
+    </linearGradient>
+
+    <linearGradient id="boxFaceRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="24" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="reelGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur1" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base for App / Telegram Icon -->
+  <rect width="512" height="512" rx="115" fill="url(#bgGrad)" />
+  <rect width="510" height="510" x="1" y="1" rx="114" fill="none" stroke="url(#purpleGrad)" stroke-width="2" stroke-opacity="0.35" />
+
+  <!-- Ambient Light Sphere -->
+  <circle cx="256" cy="245" r="140" fill="#7c3aed" opacity="0.28" filter="url(#softGlow)" />
+  <circle cx="290" cy="220" r="90" fill="#ec4899" opacity="0.16" filter="url(#softGlow)" />
+
+  <!-- Isometric Box Base -->
+  <g transform="translate(0, 10)">
+    <!-- Box Left Face -->
+    <path d="M 145 235 L 256 300 L 256 385 L 145 320 Z" fill="url(#boxFaceLeft)" stroke="#a855f7" stroke-width="2" stroke-opacity="0.4" />
+    
+    <!-- Box Right Face -->
+    <path d="M 256 300 L 367 235 L 367 320 L 256 385 Z" fill="url(#boxFaceRight)" stroke="#c084fc" stroke-width="2" stroke-opacity="0.5" />
+    
+    <!-- Box Top Face -->
+    <path d="M 256 170 L 367 235 L 256 300 L 145 235 Z" fill="url(#boxTop)" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.35" />
+  </g>
+
+  <!-- Film Reel Ribbon / Vault Arc -->
+  <g filter="url(#reelGlow)">
+    <!-- Dynamic Ribbon Wrapping from Box -->
+    <path d="M 125 210 C 125 130, 210 95, 290 105 C 375 115, 400 185, 375 250 C 350 315, 275 350, 205 345 C 150 340, 120 295, 120 250" 
+          fill="none" 
+          stroke="url(#purpleGrad)" 
+          stroke-width="18" 
+          stroke-linecap="round" />
+
+    <path d="M 155 195 C 170 145, 225 125, 280 130 C 345 138, 368 185, 350 235 C 330 285, 270 310, 220 305" 
+          fill="none" 
+          stroke="url(#cyanGrad)" 
+          stroke-width="7" 
+          stroke-linecap="round" 
+          opacity="0.85" />
+  </g>
+
+  <!-- Film Reel Sprocket Holes / Perforations -->
+  <g fill="#07060c" opacity="0.95">
+    <circle cx="160" cy="148" r="4.5" />
+    <circle cx="205" cy="120" r="4.5" />
+    <circle cx="256" cy="110" r="4.5" />
+    <circle cx="310" cy="118" r="4.5" />
+    <circle cx="355" cy="148" r="4.5" />
+    <circle cx="380" cy="195" r="4.5" />
+    <circle cx="375" cy="245" r="4.5" />
+    <circle cx="340" cy="290" r="4.5" />
+    <circle cx="290" cy="325" r="4.5" />
+    <circle cx="235" cy="335" r="4.5" />
+  </g>
+
+  <!-- Glowing Central Play Glyph / Diamond Prism -->
+  <g transform="translate(256, 252)" filter="url(#softGlow)">
+    <!-- Outer Glow Polygon -->
+    <polygon points="-8,-42 36,0 -8,42" fill="url(#pinkGrad)" opacity="0.9" />
+    <!-- Inner Core Play Triangle -->
+    <polygon points="-12,-32 28,0 -12,32" fill="#ffffff" />
+  </g>
+
+  <!-- Floating Sparkles / AI Magic Dots -->
+  <circle cx="140" cy="130" r="3.5" fill="#38bdf8" filter="url(#softGlow)" />
+  <circle cx="378" cy="122" r="4" fill="#a855f7" filter="url(#softGlow)" />
+  <circle cx="395" cy="285" r="3" fill="#f43f5e" filter="url(#softGlow)" />
+  <circle cx="115" cy="280" r="2.5" fill="#ffffff" opacity="0.8" />
+</svg>
