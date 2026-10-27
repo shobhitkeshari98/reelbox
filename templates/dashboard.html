@@ -572,23 +572,23 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(8, 8, 12, 0.75);
+            background: rgba(8, 8, 12, 0.78);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #f1f5f9;
-            font-size: 9.5px;
+            color: #fb7185; /* Soft Red / Coral Accent */
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 2.5px 7px;
+            padding: 2.5px 8px;
             border-radius: 5px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             z-index: 3;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        .boxy-preview-badge.instagram { color: #fb7185; }
-        .boxy-preview-badge.youtube { color: #f87171; }
-        .boxy-preview-badge.twitter { color: #38bdf8; }
 
         .boxy-number-badge {
             position: absolute;
@@ -1415,11 +1415,19 @@
             filtered.forEach((r, idx) => {
                 const num = String(idx + 1).padStart(2, '0');
                 const cleanHeading = getCleanHeading(r);
-                const platform = (r.platform || 'link').toLowerCase();
-                const tags = JSON.parse(r.tags || '[]');
                 const points = JSON.parse(r.key_points || '[]');
                 const hasThumb = r.thumbnail_url && r.thumbnail_url.startsWith('http');
                 const timeAgo = formatRelativeTime(r.created_at);
+
+                // Category or subcategory to show in the red badge on thumbnail
+                const catLabel = (r.subcategory && r.subcategory.trim() && r.subcategory.toLowerCase() !== 'general')
+                                 ? r.subcategory.trim()
+                                 : (r.category || 'Bookmark');
+
+                // Clean author name (omit if it's just 'Instagram' or empty)
+                const authorClean = (r.author_name && !r.author_name.toLowerCase().includes('instagram')) 
+                                    ? r.author_name.trim() 
+                                    : '';
 
                 html += `
                     <div class="boxy-card" id="card_${r.id}">
@@ -1427,7 +1435,7 @@
                         <!-- Top 16:9 Thumbnail Preview (Arcade Style) -->
                         <div class="boxy-preview" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
                             <span class="boxy-number-badge">#${num}</span>
-                            <span class="boxy-preview-badge ${platform}">${platform}</span>
+                            <span class="boxy-preview-badge" title="${escapeHtml(catLabel)}">${escapeHtml(catLabel)}</span>
 
                             <!-- Ghost Play Button (reveals on hover) -->
                             <div class="boxy-play-circle">
@@ -1441,7 +1449,7 @@
                             ` : `
                                 <div class="boxy-preview-placeholder">
                                     <div class="platform-watermark">${getCategorySvg(r.category)}</div>
-                                    <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.6;">${escapeHtml(r.subcategory || r.category)}</span>
+                                    <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.6;">${escapeHtml(catLabel)}</span>
                                 </div>
                             `}
                         </div>
@@ -1454,19 +1462,10 @@
                                     ${escapeHtml(cleanHeading)}
                                 </h3>
 
-                                <!-- Relative Time Subtitle (Arcade: 'Edited 1 day ago') -->
+                                <!-- Relative Time Subtitle (Arcade: 'Saved 13h ago') -->
                                 <div class="arcade-meta-time">
                                     <span>${timeAgo}</span>
-                                    ${r.author_name ? `<span>•</span> <span>${escapeHtml(r.author_name)}</span>` : ''}
-                                </div>
-
-                                <!-- Category & Tag Pills -->
-                                <div class="arcade-tags-row">
-                                    <span class="arcade-cat-pill">
-                                        ${getCategorySvg(r.category)}
-                                        <span>${escapeHtml(r.subcategory || r.category)}</span>
-                                    </span>
-                                    ${tags.slice(0, 2).map(t => `<span class="arcade-tag-pill">#${escapeHtml(t)}</span>`).join('')}
+                                    ${authorClean ? `<span>•</span> <span>${escapeHtml(authorClean)}</span>` : ''}
                                 </div>
                             </div>
 
