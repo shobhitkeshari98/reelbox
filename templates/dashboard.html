@@ -105,7 +105,7 @@
         .sidebar-menu {
             flex: 1;
             overflow-y: auto;
-            padding: 12px 10px;
+            padding: 16px 14px;
         }
 
         .nav-section-title {
@@ -114,21 +114,26 @@
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: var(--text-dim);
-            padding: 10px 10px 6px;
+            padding: 8px 10px 8px;
+        }
+
+        .nav-section-title:not(:first-child) {
+            margin-top: 22px;
+            padding-top: 6px;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 10px;
-            border-radius: var(--radius-sm);
+            padding: 9.5px 12px;
+            border-radius: 7px;
             color: var(--text-muted);
             font-size: 13.5px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.12s;
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
         .nav-item:hover {
@@ -146,7 +151,7 @@
         .nav-item-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -601,7 +606,7 @@
 
         /* Card Content Area (Arcade Clean Flow) */
         .boxy-content {
-            padding: 16px 16px 14px;
+            padding: 18px 18px 16px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -619,7 +624,7 @@
             letter-spacing: -0.012em;
             cursor: pointer;
             transition: color 0.15s ease;
-            margin: 0 0 22px 0; /* Roomy whitespace between title and action buttons */
+            margin: 0 0 24px 0; /* Roomy whitespace between title and action buttons */
         }
 
         .arcade-title:hover { color: #c4b5fd; }
@@ -696,7 +701,7 @@
         /* Arcade-style Footer Action Dock */
         .arcade-footer {
             margin-top: auto;
-            padding-top: 4px;
+            padding-top: 6px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -705,26 +710,26 @@
         .arcade-footer-left {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .arcade-footer-right {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 8px;
         }
 
         .arcade-action-btn {
-            height: 28px;
-            padding: 0 8px;
-            border-radius: 6px;
+            height: 32px;
+            padding: 0 10px;
+            border-radius: 7px;
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 255, 255, 0.06);
             color: #94a3b8;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
             font-size: 11.5px;
             font-weight: 500;
             transition: all 0.16s ease;
@@ -733,7 +738,8 @@
         }
 
         .arcade-action-btn.icon-only {
-            width: 28px;
+            width: 32px;
+            height: 32px;
             padding: 0;
         }
 
