@@ -270,3 +270,45 @@ async def get_all_users_with_reels():
         """)
         rows = await cursor.fetchall()
         return [{"user_id": row[0], "username": row[1], "first_name": row[2], "reel_count": row[3]} for row in rows]
+
+
+async def export_sync_data() -> dict:
+    """Export all users and reels for backup/sync."""
+    async with get_db() as db:
+        db.row_factory = aiosqlite.Row
+        c1 = await db.execute("SELECT user_id, username, first_name, vault_token, created_at FROM users")
+        users = [dict(r) for r in await c1.fetchall()]
+        c2 = await db.execute("SELECT * FROM reels")
+        reels = [dict(r) for r in await c2.fetchall()]
+        return {"users": users, "reels": reels}
+
+
+async def import_sync_data(users: list, reels: list):
+    """Import users and reels."""
+    async with get_db() as db:
+        for u in users:
+            await db.execute("""
+                INSERT INTO users (user_id, username, first_name, vault_token, created_at)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(user_id) DO UPDATE SET
+                    username=excluded.username,
+                    first_name=excluded.first_name,
+                    vault_token=COALESCE(users.vault_token, excluded.vault_token)
+            """, (u["user_id"], u.get("username"), u.get("first_name"), u.get("vault_token"), u.get("created_at")))
+
+        for r in reels:
+            await db.execute("""
+                INSERT OR IGNORE INTO reels (
+                    user_id, url, platform, title, description, category,
+                    subcategory, tags, summary, key_points, thumbnail_url,
+                    author_name, author_url, raw_metadata, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                r["user_id"], r["url"], r.get("platform", "instagram"),
+                r.get("title"), r.get("description"), r.get("category"),
+                r.get("subcategory"), r.get("tags"), r.get("summary"),
+                r.get("key_points"), r.get("thumbnail_url"),
+                r.get("author_name"), r.get("author_url"),
+                r.get("raw_metadata"), r.get("created_at")
+            ))
+        await db.commit()

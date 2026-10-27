@@ -288,3 +288,29 @@ async def api_sync_notion(
         "synced": synced_count,
         "errors": errors[:5]
     })
+
+
+@app.post("/api/vault/sync")
+async def api_vault_sync(data: dict = Body(...), secret_key: str = Query(None)):
+    """Import reels & user data from backup or local sync."""
+    expected_key = os.getenv("GEMINI_API_KEY")
+    if not secret_key or secret_key != expected_key:
+        raise HTTPException(status_code=403, detail="Unauthorized")
+
+    users = data.get("users", [])
+    reels = data.get("reels", [])
+    from database import import_sync_data
+    await import_sync_data(users, reels)
+    return JSONResponse({"status": "ok", "users_synced": len(users), "reels_synced": len(reels)})
+
+
+@app.get("/api/vault/export")
+async def api_vault_export(secret_key: str = Query(None)):
+    """Export all reels & users for backup."""
+    expected_key = os.getenv("GEMINI_API_KEY")
+    if not secret_key or secret_key != expected_key:
+        raise HTTPException(status_code=403, detail="Unauthorized")
+
+    from database import export_sync_data
+    data = await export_sync_data()
+    return JSONResponse(data)
