@@ -4,3 +4,4 @@ __pycache__/
 reelvault.db
 *.log
 .DS_Store
+sync_to_cloud.py
