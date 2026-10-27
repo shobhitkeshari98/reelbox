@@ -54,11 +54,12 @@
         }
 
         .sidebar-header {
-            padding: 18px 16px 14px;
+            height: 56px;
+            padding: 0 18px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             border-bottom: 1px solid var(--border-subtle);
+            box-sizing: border-box;
         }
 
         .brand-pill {
@@ -212,7 +213,7 @@
         .topbar {
             height: 56px;
             border-bottom: 1px solid var(--border-subtle);
-            padding: 0 24px;
+            padding: 0 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -221,6 +222,7 @@
             backdrop-filter: blur(12px);
             z-index: 20;
             flex-shrink: 0;
+            box-sizing: border-box;
         }
 
         .global-search-container {
@@ -283,114 +285,14 @@
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .filter-select {
-            background: #15151a;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            padding: 6px 10px;
-            border-radius: var(--radius-sm);
-            font-size: 12px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* ── Category Focus Header Bar ── */
-        .category-focus-bar {
-            padding: 16px 24px 12px;
-            border-bottom: 1px solid var(--border-subtle);
-            background: #121216;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .category-title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .category-title-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .category-main-heading {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -0.4px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .category-count-badge {
-            font-size: 12px;
-            background: rgba(139, 92, 246, 0.15);
-            color: #c4b5fd;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        /* Subcategories Filter Chips */
-        .subcategory-chips {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-
-        .subcategory-chips::-webkit-scrollbar { height: 3px; }
-        .subcategory-chips::-webkit-scrollbar-thumb { background: #333; }
-
-        .sub-chip {
-            background: #1a1a22;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 11.5px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.12s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .sub-chip:hover {
-            background: #22222d;
-            color: var(--text-main);
-        }
-
-        .sub-chip.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        .sub-chip .chip-count {
-            font-size: 10px;
-            opacity: 0.8;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 1px 5px;
-            border-radius: 8px;
+            gap: 12px;
         }
 
         /* ── Workspace Content Canvas ── */
         .workspace-canvas {
             flex: 1;
             overflow-y: auto;
-            padding: 24px;
+            padding: 28px 32px;
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -399,7 +301,7 @@
         .boxy-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
-            gap: 22px;
+            gap: 24px;
             max-width: 1440px;
             margin: 0 auto;
         }
@@ -929,18 +831,6 @@
             </div>
 
             <div class="topbar-right">
-                <select class="filter-select" id="platformFilter" onchange="onFilterChange()">
-                    <option value="all">All Platforms</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="youtube">YouTube</option>
-                    <option value="twitter">Twitter / X</option>
-                </select>
-
-                <select class="filter-select" id="sortFilter" onchange="onFilterChange()">
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                </select>
-
                 <!-- Arcade-style Grid / List View Switcher -->
                 <div class="view-switch-group">
                     <button class="view-switch-btn active" id="btnViewGrid" onclick="setViewMode('grid')" title="Grid View">
@@ -952,24 +842,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- Category Focus Header & Subcategory Chips -->
-        <div class="category-focus-bar" id="categoryFocusBar">
-            <div class="category-title-row">
-                <div class="category-title-left">
-                    <h1 class="category-main-heading" id="categoryHeaderTitle">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-                        <span>All Bookmarks</span>
-                    </h1>
-                    <span class="category-count-badge" id="categoryHeaderCount">0</span>
-                </div>
-            </div>
-
-            <!-- Subcategory Filter Chips -->
-            <div class="subcategory-chips" id="subcategoryChips">
-                <!-- Dynamically rendered -->
-            </div>
-        </div>
 
         <!-- Canvas Container: Boxy Grid -->
         <div class="workspace-canvas" id="workspaceCanvas">
@@ -1245,6 +1117,7 @@
         function updateCategoryHeader() {
             const titleEl = document.getElementById('categoryHeaderTitle');
             const countEl = document.getElementById('categoryHeaderCount');
+            if (!titleEl || !countEl) return;
 
             if (!selectedCategory) {
                 titleEl.innerHTML = `
@@ -1267,10 +1140,12 @@
             let url = `/api/reels/${currentUser}?limit=350`;
             if (selectedCategory) url += `&category=${encodeURIComponent(selectedCategory)}`;
 
-            const platform = document.getElementById('platformFilter').value;
+            const platformEl = document.getElementById('platformFilter');
+            const platform = platformEl ? platformEl.value : 'all';
             if (platform !== 'all') url += `&platform=${encodeURIComponent(platform)}`;
 
-            const sortBy = document.getElementById('sortFilter').value;
+            const sortEl = document.getElementById('sortFilter');
+            const sortBy = sortEl ? sortEl.value : 'newest';
             url += `&sort_by=${encodeURIComponent(sortBy)}`;
 
             const search = document.getElementById('globalSearchInput').value.trim();
@@ -1299,6 +1174,7 @@
         // ── SUBCATEGORY CHIPS (Filter within the active category) ──
         function renderSubcategoryChips() {
             const container = document.getElementById('subcategoryChips');
+            if (!container) return;
             
             // Collect unique subcategories from current reels
             const subMap = {};
