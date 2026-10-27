@@ -149,8 +149,9 @@ async def categories_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 async def dashboard_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /dashboard and /web command with private magic link."""
     user = update.effective_user
-    count = await get_reel_count(user.id)
+    await upsert_user(user.id, user.username, user.first_name)
     token = await get_or_create_vault_token(user.id)
+    count = await get_reel_count(user.id)
     magic_url = f"{APP_URL}/?token={token}"
 
     safe_name = html.escape(user.first_name or "Friend")

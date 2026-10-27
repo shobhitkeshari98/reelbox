@@ -77,10 +77,11 @@ async def get_or_create_vault_token(user_id: int) -> str:
             return row["vault_token"]
 
         token = secrets.token_urlsafe(16)
-        await db.execute(
-            "UPDATE users SET vault_token = ? WHERE user_id = ?",
-            (token, user_id)
-        )
+        await db.execute("""
+            INSERT INTO users (user_id, vault_token)
+            VALUES (?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET vault_token = excluded.vault_token
+        """, (user_id, token))
         await db.commit()
         return token
 
