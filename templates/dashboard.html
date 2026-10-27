@@ -627,20 +627,10 @@
             letter-spacing: -0.012em;
             cursor: pointer;
             transition: color 0.15s ease;
-            margin: 0 0 4px 0;
+            margin: 0 0 12px 0;
         }
 
         .arcade-title:hover { color: #c4b5fd; }
-
-        /* Arcade-style Relative Time Subtitle ('Edited 1 day ago') */
-        .arcade-meta-time {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
 
         .arcade-tags-row {
             display: flex;
@@ -713,8 +703,7 @@
         /* Arcade-style Footer Action Dock */
         .arcade-footer {
             margin-top: auto;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -1461,12 +1450,6 @@
                                 <h3 class="arcade-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
                                     ${escapeHtml(cleanHeading)}
                                 </h3>
-
-                                <!-- Relative Time Subtitle (Arcade: 'Saved 13h ago') -->
-                                <div class="arcade-meta-time">
-                                    <span>${timeAgo}</span>
-                                    ${authorClean ? `<span>•</span> <span>${escapeHtml(authorClean)}</span>` : ''}
-                                </div>
                             </div>
 
                             <!-- Expandable AI Takeaways -->
