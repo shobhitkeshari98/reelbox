@@ -446,6 +446,20 @@
             flex-shrink: 0;
         }
 
+        .boxy-grid.list-view .boxy-card.expanded {
+            flex-wrap: wrap;
+        }
+
+        .boxy-grid.list-view .boxy-card.expanded .boxy-content {
+            flex-wrap: wrap;
+        }
+
+        .boxy-grid.list-view .boxy-card.expanded .arcade-takeaways-drawer {
+            width: 100%;
+            flex-basis: 100%;
+            margin-top: 14px;
+        }
+
         /* Card Container (Arcade Elevation) */
         .boxy-card {
             background: #121217;
@@ -553,9 +567,10 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #fb7185; /* Soft Red / Coral Accent */
+            color: #94a3b8; /* Same refined grey as boxy-number-badge */
+            font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             padding: 2.5px 8px;
             border-radius: 5px;
@@ -586,7 +601,7 @@
 
         /* Card Content Area (Arcade Clean Flow) */
         .boxy-content {
-            padding: 14px 16px 12px;
+            padding: 16px 16px 14px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -595,7 +610,7 @@
         .arcade-title {
             font-size: 14px;
             font-weight: 600;
-            line-height: 1.4;
+            line-height: 1.45;
             color: #f8fafc;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -604,7 +619,7 @@
             letter-spacing: -0.012em;
             cursor: pointer;
             transition: color 0.15s ease;
-            margin: 0 0 12px 0;
+            margin: 0 0 22px 0; /* Roomy whitespace between title and action buttons */
         }
 
         .arcade-title:hover { color: #c4b5fd; }
@@ -647,26 +662,27 @@
             border-color: rgba(255, 255, 255, 0.14);
         }
 
-        /* Expandable Accordion Takeaways */
+        /* Expandable Accordion Takeaways (Opens on the bottom side) */
         .arcade-takeaways-drawer {
             display: none;
             background: rgba(139, 92, 246, 0.06);
             border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 8px;
             padding: 12px 14px;
-            margin-bottom: 12px;
+            margin-top: 14px;
+            margin-bottom: 2px;
             font-size: 12.5px;
             color: #cbd5e1;
             line-height: 1.55;
-            animation: fadeIn 0.18s ease-out;
+            animation: slideDownDrawer 0.18s ease-out;
         }
 
         .boxy-card.expanded .arcade-takeaways-drawer {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
+        @keyframes slideDownDrawer {
+            from { opacity: 0; transform: translateY(-6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -680,7 +696,7 @@
         /* Arcade-style Footer Action Dock */
         .arcade-footer {
             margin-top: auto;
-            padding-top: 0;
+            padding-top: 4px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -1437,17 +1453,6 @@
                                 </h3>
                             </div>
 
-                            <!-- Expandable AI Takeaways -->
-                            <div class="arcade-takeaways-drawer">
-                                <div style="font-size:11px; font-weight:700; color:#fbbf24; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                                    <span>AI Key Takeaways</span>
-                                </div>
-                                ${points.length > 0 ? `
-                                    <ul>${points.slice(0, 3).map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
-                                ` : `<div>${escapeHtml(r.summary || 'Saved bookmark')}</div>`}
-                            </div>
-
                             <!-- Bottom Action Toolbar (Arcade Footer Dock) -->
                             <div class="arcade-footer">
                                 <div class="arcade-footer-left">
@@ -1469,8 +1474,8 @@
                                     <button class="arcade-action-btn icon-only" title="Details Drawer" onclick="openDrawer(${r.id})">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10"/>
-                                            <line x1="12" x2="12" y1="16" y2="12"/>
-                                            <line x1="12" x2="12.01" y1="8" y2="8"/>
+                                            <line x1="12" y1="12" x2="12" y2="16"/>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"/>
                                         </svg>
                                     </button>
                                     <a href="${escapeHtml(r.url)}" target="_blank" class="arcade-action-btn icon-only" title="Open Original Link" onclick="event.stopPropagation()">
@@ -1489,6 +1494,18 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Expandable AI Takeaways (Opens on the bottom side) -->
+                            <div class="arcade-takeaways-drawer">
+                                <div style="font-size:11px; font-weight:700; color:#fbbf24; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                    <span>AI Key Takeaways</span>
+                                </div>
+                                ${points.length > 0 ? `
+                                    <ul>${points.slice(0, 3).map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+                                ` : `<div>${escapeHtml(r.summary || 'Saved bookmark')}</div>`}
+                            </div>
+                        </div>
 
                         </div>
                     </div>
