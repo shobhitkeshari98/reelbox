@@ -258,15 +258,17 @@
 
         .global-search-input {
             width: 100%;
+            height: 36px;
             background: #111116;
             border: 1px solid var(--border-subtle);
             color: var(--text-main);
-            padding: 8px 65px 8px 36px;
+            padding: 0 58px 0 36px;
             border-radius: var(--radius-md);
             font-size: 13px;
             outline: none;
             transition: all 0.18s;
             font-family: inherit;
+            box-sizing: border-box;
         }
 
         .global-search-input:focus {
@@ -277,7 +279,9 @@
 
         .search-shortcut-badge {
             position: absolute;
-            right: 14px;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
             background: none;
             border: none;
             color: #52525b;
@@ -287,63 +291,190 @@
             pointer-events: none;
             letter-spacing: 0.2px;
             user-select: none;
+            display: flex;
+            align-items: center;
         }
 
-        .search-filter-box {
+        /* ── CUSTOM MODERN PLATFORM DROPDOWN ── */
+        .platform-filter-dropdown {
             position: relative;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .platform-filter-btn {
             display: inline-flex;
             align-items: center;
+            gap: 7.5px;
+            height: 36px;
+            padding: 0 11px 0 10px;
             background: #111116;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
-            height: 36px;
-            padding: 0 10px;
-            transition: all 0.18s ease;
-            box-sizing: border-box;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .search-filter-box:hover {
-            border-color: rgba(255, 255, 255, 0.16);
-            background: #15151c;
-        }
-
-        .search-filter-icon {
-            color: var(--text-dim);
-            margin-right: 6px;
-            flex-shrink: 0;
-            pointer-events: none;
-        }
-
-        .search-filter-chevron {
-            color: var(--text-dim);
-            margin-left: 4px;
-            flex-shrink: 0;
-            pointer-events: none;
-        }
-
-        .search-filter-select {
-            appearance: none;
-            -webkit-appearance: none;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
+            color: #94a3b8;
             font-size: 12.5px;
             font-weight: 500;
             font-family: inherit;
-            outline: none;
             cursor: pointer;
-            padding-right: 2px;
+            outline: none;
+            transition: all 0.15s ease;
+            user-select: none;
+            box-sizing: border-box;
         }
 
-        .search-filter-select:hover {
-            color: var(--text-main);
+        .platform-filter-btn:hover {
+            background: #16161f;
+            border-color: rgba(255, 255, 255, 0.18);
+            color: #f8fafc;
         }
 
-        .search-filter-select option {
-            background: #16161d;
-            color: #fff;
+        .platform-filter-btn:active {
+            transform: scale(0.98);
+        }
+
+        .platform-filter-btn.open {
+            background: #16161f;
+            border-color: rgba(255, 255, 255, 0.28);
+            color: #f8fafc;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+        }
+
+        .platform-btn-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: inherit;
+            flex-shrink: 0;
+        }
+
+        .platform-btn-label {
+            white-space: nowrap;
+            letter-spacing: -0.1px;
+        }
+
+        .platform-btn-chevron {
+            color: #64748b;
+            flex-shrink: 0;
+            margin-left: 2px;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s ease;
+        }
+
+        .platform-filter-btn:hover .platform-btn-chevron {
+            color: #94a3b8;
+        }
+
+        .platform-filter-btn.open .platform-btn-chevron {
+            transform: rotate(180deg);
+            color: #f8fafc;
+        }
+
+        /* Floating Popover */
+        .platform-popover-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            min-width: 180px;
+            background: #121218;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.7), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-4px) scale(0.98);
+            transform-origin: top left;
+            transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.15s;
+            pointer-events: none;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .platform-popover-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .platform-popover-header {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #52525b;
+            padding: 6px 10px 4px;
+            user-select: none;
+        }
+
+        .platform-popover-options {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .platform-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 7px 10px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: #cbd5e1;
+            font-size: 12.5px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.12s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .platform-option:hover {
+            background: rgba(255, 255, 255, 0.07);
+            color: #ffffff;
+        }
+
+        .platform-option.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .opt-left {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .opt-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .opt-check {
+            display: inline-flex;
+            align-items: center;
+            color: var(--accent);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.12s ease;
+            flex-shrink: 0;
+        }
+
+        .platform-option.active .opt-check {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .topbar-right {
@@ -895,23 +1026,126 @@
                     </div>
                 </div>
 
-                <!-- Filter Dropdown Box beside Search Bar -->
-                <div class="search-filter-box" title="Sort & Filter Reels">
-                    <svg class="search-filter-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="4" x2="20" y1="21" y2="21"/>
-                        <line x1="4" x2="20" y1="14" y2="14"/>
-                        <line x1="4" x2="20" y1="7" y2="7"/>
-                        <circle cx="14" cy="7" r="2"/>
-                        <circle cx="8" cy="14" r="2"/>
-                        <circle cx="16" cy="21" r="2"/>
-                    </svg>
-                    <select class="search-filter-select" id="sortFilter" onchange="onFilterChange()">
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                    </select>
-                    <svg class="search-filter-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"/>
-                    </svg>
+                <!-- 🌐 MODERN PLATFORM FILTER DROPDOWN -->
+                <div class="platform-filter-dropdown" id="platformFilterDropdown">
+                    <button type="button" 
+                            class="platform-filter-btn" 
+                            id="platformFilterBtn" 
+                            aria-haspopup="true" 
+                            aria-expanded="false" 
+                            onclick="togglePlatformDropdown(event)"
+                            title="Filter by Platform">
+                        <span class="platform-btn-icon" id="platformBtnIcon">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="7" height="7" x="3" y="3" rx="1"/>
+                                <rect width="7" height="7" x="14" y="3" rx="1"/>
+                                <rect width="7" height="7" x="14" y="14" rx="1"/>
+                                <rect width="7" height="7" x="3" y="14" rx="1"/>
+                            </svg>
+                        </span>
+                        <span class="platform-btn-label" id="platformBtnLabel">All Platforms</span>
+                        <svg class="platform-btn-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+
+                    <!-- Floating Popover Menu -->
+                    <div class="platform-popover-menu" id="platformPopoverMenu">
+                        <div class="platform-popover-header">Platform</div>
+                        <div class="platform-popover-options">
+                            <button type="button" class="platform-option active" data-platform="all" onclick="selectPlatform('all', 'All Platforms')">
+                                <span class="opt-left">
+                                    <span class="opt-icon">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect width="7" height="7" x="3" y="3" rx="1"/>
+                                            <rect width="7" height="7" x="14" y="3" rx="1"/>
+                                            <rect width="7" height="7" x="14" y="14" rx="1"/>
+                                            <rect width="7" height="7" x="3" y="14" rx="1"/>
+                                        </svg>
+                                    </span>
+                                    <span>All Platforms</span>
+                                </span>
+                                <span class="opt-check">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </button>
+
+                            <button type="button" class="platform-option" data-platform="instagram" onclick="selectPlatform('instagram', 'Instagram')">
+                                <span class="opt-left">
+                                    <span class="opt-icon" style="color: #e1306c;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                                        </svg>
+                                    </span>
+                                    <span>Instagram</span>
+                                </span>
+                                <span class="opt-check">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </button>
+
+                            <button type="button" class="platform-option" data-platform="youtube" onclick="selectPlatform('youtube', 'YouTube')">
+                                <span class="opt-left">
+                                    <span class="opt-icon" style="color: #ef4444;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+                                            <polygon points="10 15 15 12 10 9 10 15" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <span>YouTube</span>
+                                </span>
+                                <span class="opt-check">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </button>
+
+                            <button type="button" class="platform-option" data-platform="tiktok" onclick="selectPlatform('tiktok', 'TikTok')">
+                                <span class="opt-left">
+                                    <span class="opt-icon" style="color: #22d3ee;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                                        </svg>
+                                    </span>
+                                    <span>TikTok</span>
+                                </span>
+                                <span class="opt-check">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </button>
+
+                            <button type="button" class="platform-option" data-platform="twitter" onclick="selectPlatform('twitter', 'X / Twitter')">
+                                <span class="opt-left">
+                                    <span class="opt-icon" style="color: #e2e8f0;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                        </svg>
+                                    </span>
+                                    <span>X / Twitter</span>
+                                </span>
+                                <span class="opt-check">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </button>
+
+                            <button type="button" class="platform-option" data-platform="other" onclick="selectPlatform('other', 'Other')">
+                                <span class="opt-left">
+                                    <span class="opt-icon" style="color: #94a3b8;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="2" x2="22" y1="12" y2="12"/>
+                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                        </svg>
+                                    </span>
+                                    <span>Other</span>
+                                </span>
+                                <span class="opt-check">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -983,6 +1217,7 @@
         let currentUser = null;
         let selectedCategory = null;      // Selected category in sidebar (null = all)
         let selectedSubcategory = null;   // Selected subcategory chip (null = all)
+        let selectedPlatform = 'all';     // Selected platform filter ('all', 'instagram', 'youtube', etc.)
         let currentReels = [];
         let categoriesData = [];
         let activeReel = null;
@@ -1220,18 +1455,83 @@
             }
         }
 
+        // ── 🌐 MODERN PLATFORM DROPDOWN CONTROLS ──
+        const PLATFORM_ICONS = {
+            'all': `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>`,
+            'instagram': `<span style="color:#e1306c; display:inline-flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span>`,
+            'youtube': `<span style="color:#ef4444; display:inline-flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><polygon points="10 15 15 12 10 9 10 15" fill="currentColor"/></svg></span>`,
+            'tiktok': `<span style="color:#22d3ee; display:inline-flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></span>`,
+            'twitter': `<span style="color:#e2e8f0; display:inline-flex;"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>`,
+            'other': `<span style="color:#94a3b8; display:inline-flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>`
+        };
+
+        function togglePlatformDropdown(e) {
+            if (e) e.stopPropagation();
+            const btn = document.getElementById('platformFilterBtn');
+            const menu = document.getElementById('platformPopoverMenu');
+            if (!btn || !menu) return;
+            const isOpen = menu.classList.contains('show');
+            if (isOpen) {
+                closePlatformDropdown();
+            } else {
+                menu.classList.add('show');
+                btn.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function closePlatformDropdown() {
+            const btn = document.getElementById('platformFilterBtn');
+            const menu = document.getElementById('platformPopoverMenu');
+            if (menu) menu.classList.remove('show');
+            if (btn) {
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        function selectPlatform(platform, label) {
+            selectedPlatform = platform;
+            
+            // Update trigger button icon & label
+            const iconContainer = document.getElementById('platformBtnIcon');
+            const labelContainer = document.getElementById('platformBtnLabel');
+            if (iconContainer) iconContainer.innerHTML = PLATFORM_ICONS[platform] || PLATFORM_ICONS['all'];
+            if (labelContainer) labelContainer.textContent = label;
+
+            // Update active state in popover menu
+            document.querySelectorAll('.platform-option').forEach(opt => {
+                opt.classList.toggle('active', opt.getAttribute('data-platform') === platform);
+            });
+
+            closePlatformDropdown();
+            loadReels();
+        }
+
+        // Global dismiss listeners
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('platformFilterDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                closePlatformDropdown();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePlatformDropdown();
+            }
+        });
+
         // ── REELS FETCHING & FILTERING ──
         async function loadReels() {
             let url = `/api/reels/${currentUser}?limit=350`;
             if (selectedCategory) url += `&category=${encodeURIComponent(selectedCategory)}`;
 
-            const platformEl = document.getElementById('platformFilter');
-            const platform = platformEl ? platformEl.value : 'all';
-            if (platform !== 'all') url += `&platform=${encodeURIComponent(platform)}`;
+            if (selectedPlatform && selectedPlatform !== 'all') {
+                url += `&platform=${encodeURIComponent(selectedPlatform)}`;
+            }
 
-            const sortEl = document.getElementById('sortFilter');
-            const sortBy = sortEl ? sortEl.value : 'newest';
-            url += `&sort_by=${encodeURIComponent(sortBy)}`;
+            url += `&sort_by=newest`;
 
             const search = document.getElementById('globalSearchInput').value.trim();
             if (search) url += `&search=${encodeURIComponent(search)}`;
@@ -1359,10 +1659,19 @@
 
             if (!filtered || filtered.length === 0) {
                 const search = document.getElementById('globalSearchInput').value.trim();
-                showEmptyWorkspace(
-                    search ? `No matches for "${search}"` : "No Bookmarks in this Category",
-                    search ? "Try searching with a different keyword or platform." : "Send reels to @ReelboxxBot on Telegram to populate this category!"
-                );
+                let emptyTitle = "No Bookmarks in this Category";
+                let emptySubtitle = "Send reels to @ReelboxxBot on Telegram to populate this category!";
+
+                if (search) {
+                    emptyTitle = `No matches for "${search}"`;
+                    emptySubtitle = "Try searching with a different keyword or platform filter.";
+                } else if (selectedPlatform !== 'all') {
+                    const platformName = selectedPlatform === 'twitter' ? 'X / Twitter' : (selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1));
+                    emptyTitle = `No ${platformName} Bookmarks Found`;
+                    emptySubtitle = `You don't have any saved bookmarks from ${platformName} yet.`;
+                }
+
+                showEmptyWorkspace(emptyTitle, emptySubtitle);
                 return;
             }
 
