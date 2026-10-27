@@ -412,7 +412,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           📦 BOXY STYLE REEL CARDS GRID (Linear & Bento Aesthetic)
+           📦 ARCADE-INSPIRED VIDEO CARD GRID & LIST
            ═══════════════════════════════════════════════════════════════ */
         .boxy-grid {
             display: grid;
@@ -422,29 +422,77 @@
             margin: 0 auto;
         }
 
+        /* List View Mode (Arcade style) */
+        .boxy-grid.list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 1100px;
+        }
+
+        .boxy-grid.list-view .boxy-card {
+            flex-direction: row;
+            align-items: center;
+            min-height: 110px;
+        }
+
+        .boxy-grid.list-view .boxy-preview {
+            width: 160px;
+            height: 100%;
+            border-bottom: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .boxy-grid.list-view .boxy-content {
+            padding: 12px 18px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .boxy-grid.list-view .arcade-meta-section {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .boxy-grid.list-view .arcade-tags-row {
+            margin-bottom: 0;
+        }
+
+        .boxy-grid.list-view .arcade-footer {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+            flex-shrink: 0;
+        }
+
+        /* Card Container (Arcade Elevation) */
         .boxy-card {
             background: #121217;
             border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
                         border-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
                         box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.45);
             position: relative;
         }
 
         .boxy-card:hover {
             transform: translateY(-3px);
             border-color: rgba(139, 92, 246, 0.38);
-            box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(139, 92, 246, 0.2) inset;
+            box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(139, 92, 246, 0.18) inset;
         }
 
-        /* Top Preview Container */
+        /* Top 16:9 Thumbnail Preview */
         .boxy-preview {
-            height: 172px;
+            height: 168px;
             width: 100%;
             background: radial-gradient(circle at 50% 30%, #1e1e28 0%, #0d0d12 100%);
             display: flex;
@@ -464,41 +512,41 @@
         }
 
         .boxy-card:hover .boxy-preview img {
-            transform: scale(1.045);
+            transform: scale(1.04);
         }
 
-        /* Play Button Floating Overlay (Soft, Minimal Glass) */
+        /* Ghost Play Trigger (Invisible in idle, reveals on hover) */
         .boxy-play-circle {
             position: absolute;
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.32);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            color: rgba(255, 255, 255, 0.9);
+            background: rgba(10, 10, 15, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-            opacity: 0.65;
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             z-index: 2;
         }
 
         .boxy-play-circle svg {
             margin-left: 2px;
-            transition: transform 0.2s ease;
         }
 
         .boxy-card:hover .boxy-play-circle {
             opacity: 1;
-            background: rgba(139, 92, 246, 0.82);
-            border-color: rgba(255, 255, 255, 0.35);
-            transform: scale(1.08);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.45);
+            transform: scale(1);
+            background: rgba(139, 92, 246, 0.9);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);
         }
 
         .boxy-preview-placeholder {
@@ -522,19 +570,19 @@
 
         .boxy-preview-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(8, 8, 12, 0.72);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            top: 10px;
+            right: 10px;
+            background: rgba(8, 8, 12, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: #f1f5f9;
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 6px;
-            letter-spacing: 0.6px;
+            padding: 2.5px 7px;
+            border-radius: 5px;
+            letter-spacing: 0.5px;
             z-index: 3;
         }
 
@@ -544,85 +592,109 @@
 
         .boxy-number-badge {
             position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(8, 8, 12, 0.72);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            top: 10px;
+            left: 10px;
+            background: rgba(8, 8, 12, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: #94a3b8;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 2.5px 7px;
+            border-radius: 5px;
             z-index: 3;
         }
 
-        /* Card Content Area (Strict 8px design spacing) */
+        /* Card Content Area (Arcade Clean Flow) */
         .boxy-content {
-            padding: 16px 16px 14px;
+            padding: 14px 16px 12px;
             display: flex;
             flex-direction: column;
             flex: 1;
         }
 
-        .boxy-title {
+        .arcade-title {
             font-size: 14px;
             font-weight: 600;
-            line-height: 1.42;
+            line-height: 1.4;
             color: #f8fafc;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            letter-spacing: -0.015em;
+            letter-spacing: -0.012em;
             cursor: pointer;
             transition: color 0.15s ease;
-            margin: 0 0 10px 0;
+            margin: 0 0 4px 0;
         }
 
-        .boxy-title:hover { color: #c4b5fd; }
+        .arcade-title:hover { color: #c4b5fd; }
 
-        .boxy-tags-row {
+        /* Arcade-style Relative Time Subtitle ('Edited 1 day ago') */
+        .arcade-meta-time {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .arcade-tags-row {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
             gap: 6px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
-        .tag-pill {
+        .arcade-cat-pill {
+            font-size: 11px;
+            font-weight: 500;
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 2px 7px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .arcade-tag-pill {
             font-size: 11px;
             font-weight: 500;
             color: #94a3b8;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.07);
-            padding: 2.5px 8px;
+            padding: 2px 7px;
             border-radius: 5px;
             transition: all 0.15s ease;
         }
 
-        .tag-pill:hover {
+        .arcade-tag-pill:hover {
             color: #cbd5e1;
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.14);
         }
 
         /* Expandable Accordion Takeaways */
-        .boxy-takeaways-drawer {
+        .arcade-takeaways-drawer {
             display: none;
             background: rgba(139, 92, 246, 0.06);
             border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 8px;
             padding: 12px 14px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             font-size: 12.5px;
             color: #cbd5e1;
             line-height: 1.55;
             animation: fadeIn 0.18s ease-out;
         }
 
-        .boxy-card.expanded .boxy-takeaways-drawer {
+        .boxy-card.expanded .arcade-takeaways-drawer {
             display: block;
         }
 
@@ -631,66 +703,119 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .boxy-takeaways-drawer ul {
+        .arcade-takeaways-drawer ul {
             margin-left: 18px;
             margin-top: 6px;
         }
 
-        .boxy-takeaways-drawer li { margin-bottom: 4px; }
+        .arcade-takeaways-drawer li { margin-bottom: 4px; }
 
-        /* Bottom Action Toolbar (Linear/HugeIcons style) */
-        .boxy-toolbar {
+        /* Arcade-style Footer Action Dock */
+        .arcade-footer {
             margin-top: auto;
-            padding-top: 12px;
+            padding-top: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             justify-content: space-between;
+        }
+
+        .arcade-footer-left {
+            display: flex;
+            align-items: center;
             gap: 6px;
         }
 
-        .tool-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+        .arcade-footer-right {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .arcade-action-btn {
+            height: 28px;
+            padding: 0 8px;
+            border-radius: 6px;
             background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             color: #94a3b8;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 5px;
+            font-size: 11.5px;
+            font-weight: 500;
+            transition: all 0.16s ease;
             cursor: pointer;
             text-decoration: none;
         }
 
-        .tool-btn svg {
+        .arcade-action-btn.icon-only {
+            width: 28px;
+            padding: 0;
+        }
+
+        .arcade-action-btn svg {
             transition: transform 0.18s ease;
         }
 
-        .tool-btn:hover {
+        .arcade-action-btn:hover {
             color: #ffffff;
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.14);
             transform: translateY(-1px);
         }
 
-        .tool-btn.btn-sparkle:hover {
+        .arcade-action-btn.btn-sparkle:hover {
             color: #fbbf24;
             background: rgba(251, 191, 36, 0.12);
             border-color: rgba(251, 191, 36, 0.28);
         }
 
-        .boxy-card.expanded .tool-btn.btn-sparkle {
+        .boxy-card.expanded .arcade-action-btn.btn-sparkle {
             color: #fbbf24;
             background: rgba(251, 191, 36, 0.16);
             border-color: rgba(251, 191, 36, 0.35);
         }
 
-        .tool-btn.btn-delete:hover {
+        .arcade-action-btn.btn-delete:hover {
             color: #fb7185;
             background: rgba(244, 63, 94, 0.12);
             border-color: rgba(244, 63, 94, 0.28);
+        }
+
+        /* View Switcher Controls (Arcade Style Grid/List) */
+        .view-switch-group {
+            display: flex;
+            align-items: center;
+            background: #181820;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .view-switch-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .view-switch-btn:hover {
+            color: #fff;
+        }
+
+        .view-switch-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
         }
 
         /* ── Side Drawer ── */
@@ -826,6 +951,16 @@
                     <option value="newest">Newest</option>
                     <option value="oldest">Oldest</option>
                 </select>
+
+                <!-- Arcade-style Grid / List View Switcher -->
+                <div class="view-switch-group">
+                    <button class="view-switch-btn active" id="btnViewGrid" onclick="setViewMode('grid')" title="Grid View">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                    </button>
+                    <button class="view-switch-btn" id="btnViewList" onclick="setViewMode('list')" title="List View">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -835,7 +970,7 @@
                 <div class="category-title-left">
                     <h1 class="category-main-heading" id="categoryHeaderTitle">
                         <span>📦</span>
-                        <span>All Bookmarks</span>
+                        <span>My Library</span>
                     </h1>
                     <span class="category-count-badge" id="categoryHeaderCount">0</span>
                 </div>
@@ -1121,7 +1256,7 @@
             const countEl = document.getElementById('categoryHeaderCount');
 
             if (!selectedCategory) {
-                titleEl.innerHTML = `<span>📦</span><span>All Bookmarks</span>`;
+                titleEl.innerHTML = `<span>📦</span><span>My Library</span>`;
                 countEl.textContent = document.getElementById('totalReelsCount').textContent;
             } else {
                 const emoji = getEmoji(selectedCategory);
@@ -1211,8 +1346,47 @@
             renderBoxyCards();
         }
 
+        let currentViewMode = localStorage.getItem('reelbox_view_mode') || 'grid';
+
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            localStorage.setItem('reelbox_view_mode', mode);
+            const gridBtn = document.getElementById('btnViewGrid');
+            const listBtn = document.getElementById('btnViewList');
+            if (gridBtn && listBtn) {
+                gridBtn.classList.toggle('active', mode === 'grid');
+                listBtn.classList.toggle('active', mode === 'list');
+            }
+            const canvas = document.querySelector('.boxy-grid');
+            if (canvas) {
+                canvas.classList.toggle('list-view', mode === 'list');
+            }
+        }
+
+        function formatRelativeTime(dateStr) {
+            if (!dateStr) return 'Recently';
+            try {
+                const date = new Date(dateStr.replace(' ', 'T') + 'Z');
+                const now = new Date();
+                const diffSec = Math.floor((now - date) / 1000);
+                if (isNaN(diffSec) || diffSec < 0) return 'Recently';
+                if (diffSec < 60) return 'Just now';
+                const diffMin = Math.floor(diffSec / 60);
+                if (diffMin < 60) return `Saved ${diffMin}m ago`;
+                const diffHours = Math.floor(diffMin / 60);
+                if (diffHours < 24) return `Saved ${diffHours}h ago`;
+                const diffDays = Math.floor(diffHours / 24);
+                if (diffDays === 1) return 'Saved yesterday';
+                if (diffDays < 30) return `Saved ${diffDays}d ago`;
+                const diffMonths = Math.floor(diffDays / 30);
+                return `Saved ${diffMonths}mo ago`;
+            } catch (e) {
+                return 'Recently';
+            }
+        }
+
         // ═════════════════════════════════════════════════════════════════
-        // 📦 RENDER BOXY CARDS (Matching Image 3 Reference)
+        // 📦 RENDER BOXY CARDS (Arcade Inspiration Pattern)
         // ═════════════════════════════════════════════════════════════════
         function renderBoxyCards() {
             const canvas = document.getElementById('workspaceCanvas');
@@ -1235,7 +1409,8 @@
                 return;
             }
 
-            let html = '<div class="boxy-grid">';
+            const isList = currentViewMode === 'list';
+            let html = `<div class="boxy-grid ${isList ? 'list-view' : ''}">`;
 
             filtered.forEach((r, idx) => {
                 const num = String(idx + 1).padStart(2, '0');
@@ -1244,15 +1419,17 @@
                 const tags = JSON.parse(r.tags || '[]');
                 const points = JSON.parse(r.key_points || '[]');
                 const hasThumb = r.thumbnail_url && r.thumbnail_url.startsWith('http');
+                const timeAgo = formatRelativeTime(r.created_at);
 
                 html += `
                     <div class="boxy-card" id="card_${r.id}">
                         
-                        <!-- Top Preview Box -->
+                        <!-- Top 16:9 Thumbnail Preview (Arcade Style) -->
                         <div class="boxy-preview" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
                             <span class="boxy-number-badge">#${num}</span>
                             <span class="boxy-preview-badge ${platform}">${platform}</span>
 
+                            <!-- Ghost Play Button (reveals on hover) -->
                             <div class="boxy-play-circle">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"/>
@@ -1269,21 +1446,32 @@
                             `}
                         </div>
 
-                        <!-- Card Content -->
+                        <!-- Card Content (Arcade Clean Flow) -->
                         <div class="boxy-content">
-                            
-                            <!-- Clean Headline -->
-                            <h3 class="boxy-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
-                                ${escapeHtml(cleanHeading)}
-                            </h3>
+                            <div class="arcade-meta-section">
+                                <!-- Clean Headline -->
+                                <h3 class="arcade-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
+                                    ${escapeHtml(cleanHeading)}
+                                </h3>
 
-                            <!-- Tags Row -->
-                            <div class="boxy-tags-row">
-                                ${tags.length > 0 ? tags.slice(0, 3).map(t => `<span class="tag-pill">#${escapeHtml(t)}</span>`).join('') : '<span class="tag-pill">#bookmark</span>'}
+                                <!-- Relative Time Subtitle (Arcade: 'Edited 1 day ago') -->
+                                <div class="arcade-meta-time">
+                                    <span>${timeAgo}</span>
+                                    ${r.author_name ? `<span>•</span> <span>${escapeHtml(r.author_name)}</span>` : ''}
+                                </div>
+
+                                <!-- Category & Tag Pills -->
+                                <div class="arcade-tags-row">
+                                    <span class="arcade-cat-pill">
+                                        ${getCategorySvg(r.category)}
+                                        <span>${escapeHtml(r.subcategory || r.category)}</span>
+                                    </span>
+                                    ${tags.slice(0, 2).map(t => `<span class="arcade-tag-pill">#${escapeHtml(t)}</span>`).join('')}
+                                </div>
                             </div>
 
                             <!-- Expandable AI Takeaways -->
-                            <div class="boxy-takeaways-drawer">
+                            <div class="arcade-takeaways-drawer">
                                 <div style="font-size:11px; font-weight:700; color:#fbbf24; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                                     <span>AI Key Takeaways</span>
@@ -1293,40 +1481,46 @@
                                 ` : `<div>${escapeHtml(r.summary || 'Saved bookmark')}</div>`}
                             </div>
 
-                            <!-- Bottom Action Toolbar (Linear/HugeIcons style) -->
-                            <div class="boxy-toolbar">
-                                <button class="tool-btn btn-sparkle" title="Toggle AI Takeaways" onclick="toggleTakeaways(${r.id})">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                                    </svg>
-                                </button>
-                                <button class="tool-btn" title="Copy Link" onclick="copyLink('${escapeHtml(r.url)}', this)">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect width="13" height="13" x="9" y="9" rx="2" ry="2"/>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                                    </svg>
-                                </button>
-                                <button class="tool-btn" title="Details Drawer" onclick="openDrawer(${r.id})">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="12" x2="12" y1="16" y2="12"/>
-                                        <line x1="12" x2="12.01" y1="8" y2="8"/>
-                                    </svg>
-                                </button>
-                                <a href="${escapeHtml(r.url)}" target="_blank" class="tool-btn" title="Open Original Link" onclick="event.stopPropagation()">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M15 3h6v6"/>
-                                        <path d="M10 14 21 3"/>
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                    </svg>
-                                </a>
-                                <button class="tool-btn btn-delete" title="Delete Bookmark" onclick="deleteReel(${r.id})">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 6h18"/>
-                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                                    </svg>
-                                </button>
+                            <!-- Bottom Action Toolbar (Arcade Footer Dock) -->
+                            <div class="arcade-footer">
+                                <div class="arcade-footer-left">
+                                    <button class="arcade-action-btn btn-sparkle" title="Toggle AI Takeaways" onclick="toggleTakeaways(${r.id})">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                                        </svg>
+                                        <span>${points.length > 0 ? points.length + ' points' : 'Takeaways'}</span>
+                                    </button>
+                                </div>
+
+                                <div class="arcade-footer-right">
+                                    <button class="arcade-action-btn icon-only" title="Copy Link" onclick="copyLink('${escapeHtml(r.url)}', this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect width="13" height="13" x="9" y="9" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="arcade-action-btn icon-only" title="Details Drawer" onclick="openDrawer(${r.id})">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" x2="12" y1="16" y2="12"/>
+                                            <line x1="12" x2="12.01" y1="8" y2="8"/>
+                                        </svg>
+                                    </button>
+                                    <a href="${escapeHtml(r.url)}" target="_blank" class="arcade-action-btn icon-only" title="Open Original Link" onclick="event.stopPropagation()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M15 3h6v6"/>
+                                            <path d="M10 14 21 3"/>
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                        </svg>
+                                    </a>
+                                    <button class="arcade-action-btn icon-only btn-delete" title="Delete Bookmark" onclick="deleteReel(${r.id})">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 6h18"/>
+                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
 
                         </div>
