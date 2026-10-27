@@ -225,9 +225,16 @@
             box-sizing: border-box;
         }
 
+        .topbar-left-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 620px;
+        }
+
         .global-search-container {
             flex: 1;
-            max-width: 560px;
             position: relative;
         }
 
@@ -254,7 +261,7 @@
             background: #111116;
             border: 1px solid var(--border-subtle);
             color: var(--text-main);
-            padding: 8px 75px 8px 36px;
+            padding: 8px 65px 8px 36px;
             border-radius: var(--radius-md);
             font-size: 13px;
             outline: none;
@@ -270,16 +277,73 @@
 
         .search-shortcut-badge {
             position: absolute;
-            right: 10px;
-            background: #1c1c24;
-            border: 1px solid #2a2a34;
-            color: var(--text-dim);
-            font-size: 10px;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: #52525b;
+            font-size: 11px;
+            font-weight: 500;
             font-family: 'JetBrains Mono', monospace;
             pointer-events: none;
+            letter-spacing: 0.2px;
+            user-select: none;
+        }
+
+        .search-filter-box {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            background: #111116;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            height: 36px;
+            padding: 0 10px;
+            transition: all 0.18s ease;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .search-filter-box:hover {
+            border-color: rgba(255, 255, 255, 0.16);
+            background: #15151c;
+        }
+
+        .search-filter-icon {
+            color: var(--text-dim);
+            margin-right: 6px;
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+
+        .search-filter-chevron {
+            color: var(--text-dim);
+            margin-left: 4px;
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+
+        .search-filter-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12.5px;
+            font-weight: 500;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            padding-right: 2px;
+        }
+
+        .search-filter-select:hover {
+            color: var(--text-main);
+        }
+
+        .search-filter-select option {
+            background: #16161d;
+            color: #fff;
         }
 
         .topbar-right {
@@ -812,21 +876,42 @@
         
         <!-- Top Bar: Global Search -->
         <header class="topbar">
-            <!-- ⚡ GLOBAL SEARCH BAR -->
-            <div class="global-search-container">
-                <div class="global-search-box">
-                    <span class="global-search-icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="m21 21-4.3-4.3"/>
-                        </svg>
-                    </span>
-                    <input type="text" 
-                           id="globalSearchInput" 
-                           class="global-search-input" 
-                           placeholder="Search titles, tools, takeaways, tags..." 
-                           oninput="onSearchInput()">
-                    <span class="search-shortcut-badge">Ctrl K</span>
+            <div class="topbar-left-group">
+                <!-- ⚡ GLOBAL SEARCH BAR -->
+                <div class="global-search-container">
+                    <div class="global-search-box">
+                        <span class="global-search-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.3-4.3"/>
+                            </svg>
+                        </span>
+                        <input type="text" 
+                               id="globalSearchInput" 
+                               class="global-search-input" 
+                               placeholder="Search titles, tools, takeaways, tags..." 
+                               oninput="onSearchInput()">
+                        <span class="search-shortcut-badge">Ctrl K</span>
+                    </div>
+                </div>
+
+                <!-- Filter Dropdown Box beside Search Bar -->
+                <div class="search-filter-box" title="Sort & Filter Reels">
+                    <svg class="search-filter-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" x2="20" y1="21" y2="21"/>
+                        <line x1="4" x2="20" y1="14" y2="14"/>
+                        <line x1="4" x2="20" y1="7" y2="7"/>
+                        <circle cx="14" cy="7" r="2"/>
+                        <circle cx="8" cy="14" r="2"/>
+                        <circle cx="16" cy="21" r="2"/>
+                    </svg>
+                    <select class="search-filter-select" id="sortFilter" onchange="onFilterChange()">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
+                    <svg class="search-filter-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
                 </div>
             </div>
 
