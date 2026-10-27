@@ -412,45 +412,47 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           📦 BOXY STYLE REEL CARDS GRID (Matching User's Reference)
+           📦 BOXY STYLE REEL CARDS GRID (Linear & Bento Aesthetic)
            ═══════════════════════════════════════════════════════════════ */
         .boxy-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 20px;
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
+            gap: 22px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
         .boxy-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
+            background: #121217;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
+                        box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
             position: relative;
         }
 
         .boxy-card:hover {
             transform: translateY(-3px);
-            border-color: var(--border-strong);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 92, 246, 0.38);
+            box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(139, 92, 246, 0.2) inset;
         }
 
-        /* Top 55% Preview Container */
+        /* Top Preview Container */
         .boxy-preview {
-            height: 160px;
+            height: 172px;
             width: 100%;
-            background: linear-gradient(135deg, #1e1e28, #13131a);
+            background: radial-gradient(circle at 50% 30%, #1e1e28 0%, #0d0d12 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             cursor: pointer;
         }
 
@@ -458,11 +460,43 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .boxy-card:hover .boxy-preview img {
-            transform: scale(1.04);
+            transform: scale(1.045);
+        }
+
+        /* Play Button Floating Overlay */
+        .boxy-play-circle {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(15, 15, 22, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .boxy-play-circle svg {
+            margin-left: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        .boxy-card:hover .boxy-play-circle {
+            background: rgba(139, 92, 246, 0.9);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.08);
+            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.5);
         }
 
         .boxy-preview-placeholder {
@@ -470,51 +504,62 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             color: var(--text-dim);
         }
 
         .boxy-preview-placeholder .platform-watermark {
-            font-size: 32px;
-            opacity: 0.6;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a78bfa;
+            opacity: 0.8;
         }
 
         .boxy-preview-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(6px);
-            color: #fff;
+            top: 12px;
+            right: 12px;
+            background: rgba(8, 8, 12, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f1f5f9;
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             padding: 3px 8px;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
+            border-radius: 6px;
+            letter-spacing: 0.6px;
+            z-index: 3;
         }
 
-        .boxy-preview-badge.instagram { color: #f43f5e; }
-        .boxy-preview-badge.youtube { color: #ef4444; }
+        .boxy-preview-badge.instagram { color: #fb7185; }
+        .boxy-preview-badge.youtube { color: #f87171; }
         .boxy-preview-badge.twitter { color: #38bdf8; }
 
         .boxy-number-badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(6px);
-            color: var(--text-muted);
+            top: 12px;
+            left: 12px;
+            background: rgba(8, 8, 12, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 600;
-            padding: 3px 7px;
-            border-radius: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 3;
         }
 
-        /* Card Content Area */
+        /* Card Content Area (Strict 8px design spacing) */
         .boxy-content {
-            padding: 14px 16px 12px;
+            padding: 16px 16px 14px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -524,19 +569,19 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .boxy-icon-badge {
-            width: 22px;
-            height: 22px;
-            background: #23232e;
-            border: 1px solid var(--border-subtle);
-            border-radius: 5px;
+            width: 24px;
+            height: 24px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.22);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            color: #c4b5fd;
             flex-shrink: 0;
             margin-top: 1px;
         }
@@ -544,47 +589,55 @@
         .boxy-title {
             font-size: 13.5px;
             font-weight: 600;
-            line-height: 1.4;
-            color: #fff;
+            line-height: 1.45;
+            color: #f8fafc;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            letter-spacing: -0.15px;
+            letter-spacing: -0.012em;
             cursor: pointer;
+            transition: color 0.15s ease;
         }
 
-        .boxy-title:hover { color: var(--accent); }
+        .boxy-title:hover { color: #c4b5fd; }
 
         .boxy-tags-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 14px;
         }
 
         .tag-pill {
-            font-size: 10.5px;
-            color: var(--text-dim);
-            background: #1c1c24;
-            border: 1px solid #2a2a36;
-            padding: 2px 7px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 2.5px 8px;
+            border-radius: 5px;
+            transition: all 0.15s ease;
+        }
+
+        .tag-pill:hover {
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.14);
         }
 
         /* Expandable Accordion Takeaways */
         .boxy-takeaways-drawer {
             display: none;
-            background: #111116;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 10px 12px;
-            margin-bottom: 12px;
-            font-size: 12px;
-            color: #d1d5db;
-            line-height: 1.5;
-            animation: fadeIn 0.15s ease-out;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            font-size: 12.5px;
+            color: #cbd5e1;
+            line-height: 1.55;
+            animation: fadeIn 0.18s ease-out;
         }
 
         .boxy-card.expanded .boxy-takeaways-drawer {
@@ -592,22 +645,22 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-3px); }
+            from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .boxy-takeaways-drawer ul {
-            margin-left: 16px;
-            margin-top: 4px;
+            margin-left: 18px;
+            margin-top: 6px;
         }
 
-        .boxy-takeaways-drawer li { margin-bottom: 3px; }
+        .boxy-takeaways-drawer li { margin-bottom: 4px; }
 
-        /* Bottom Action Toolbar (Matching Image 3 icons!) */
+        /* Bottom Action Toolbar (Linear/HugeIcons style) */
         .boxy-toolbar {
             margin-top: auto;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -615,31 +668,47 @@
         }
 
         .tool-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            font-size: 14px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
             text-decoration: none;
         }
 
-        .tool-btn:hover {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.06);
+        .tool-btn svg {
+            transition: transform 0.18s ease;
         }
 
-        .tool-btn.btn-sparkle:hover { color: #f59e0b; }
-        .tool-btn.btn-delete:hover { color: #f43f5e; }
+        .tool-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.14);
+            transform: translateY(-1px);
+        }
+
+        .tool-btn.btn-sparkle:hover {
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.12);
+            border-color: rgba(251, 191, 36, 0.28);
+        }
 
         .boxy-card.expanded .tool-btn.btn-sparkle {
-            color: #f59e0b;
-            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.16);
+            border-color: rgba(251, 191, 36, 0.35);
+        }
+
+        .tool-btn.btn-delete:hover {
+            color: #fb7185;
+            background: rgba(244, 63, 94, 0.12);
+            border-color: rgba(244, 63, 94, 0.28);
         }
 
         /* ── Side Drawer ── */
@@ -864,6 +933,38 @@
 
         function getEmoji(cat) {
             return CATEGORY_EMOJIS[(cat || '').toLowerCase()] || '📌';
+        }
+
+        function getCategorySvg(cat) {
+            const c = (cat || '').toLowerCase();
+            if (c.includes('design')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>`;
+            }
+            if (c.includes('tech') || c.includes('ai')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>`;
+            }
+            if (c.includes('movie') || c.includes('show') || c.includes('video') || c.includes('photo')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="2.18"/><line x1="7" x2="7" y1="2" y2="22"/><line x1="17" x2="17" y1="2" y2="22"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="2" x2="7" y1="7" y2="7"/><line x1="2" x2="7" y1="17" y2="17"/><line x1="17" x2="22" y1="17" y2="17"/><line x1="17" x2="22" y1="7" y2="7"/></svg>`;
+            }
+            if (c.includes('food') || c.includes('cook')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2v8a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V2"/><line x1="6" x2="6" y1="2" y2="7"/><line x1="10" x2="10" y1="2" y2="7"/><line x1="14" x2="14" y1="2" y2="7"/><line x1="12" x2="12" y1="14" y2="22"/></svg>`;
+            }
+            if (c.includes('music')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+            }
+            if (c.includes('business') || c.includes('finance')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`;
+            }
+            if (c.includes('fitness') || c.includes('health')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`;
+            }
+            if (c.includes('education') || c.includes('book') || c.includes('learn')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>`;
+            }
+            if (c.includes('travel')) {
+                return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`;
+            }
+            return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>`;
         }
 
         // HTML entity decoder (converts &quot; to ", &#064; to @, etc.)
@@ -1165,17 +1266,23 @@
                 html += `
                     <div class="boxy-card" id="card_${r.id}">
                         
-                        <!-- Top Preview Box (55%) -->
+                        <!-- Top Preview Box -->
                         <div class="boxy-preview" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
                             <span class="boxy-number-badge">#${num}</span>
                             <span class="boxy-preview-badge ${platform}">${platform}</span>
+
+                            <div class="boxy-play-circle">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="6 3 20 12 6 21 6 3"/>
+                                </svg>
+                            </div>
 
                             ${hasThumb ? `
                                 <img src="/api/thumbnail/${r.id}" referrerpolicy="no-referrer" alt="${escapeHtml(cleanHeading)}" onerror="this.style.display='none'">
                             ` : `
                                 <div class="boxy-preview-placeholder">
-                                    <span class="platform-watermark">${getEmoji(r.category)}</span>
-                                    <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.5;">${escapeHtml(r.subcategory || r.category)}</span>
+                                    <div class="platform-watermark">${getCategorySvg(r.category)}</div>
+                                    <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.6;">${escapeHtml(r.subcategory || r.category)}</span>
                                 </div>
                             `}
                         </div>
@@ -1184,7 +1291,7 @@
                         <div class="boxy-content">
                             
                             <div class="boxy-title-row">
-                                <div class="boxy-icon-badge">${getEmoji(r.category)}</div>
+                                <div class="boxy-icon-badge">${getCategorySvg(r.category)}</div>
                                 <div class="boxy-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
                                     ${escapeHtml(cleanHeading)}
                                 </div>
@@ -1192,33 +1299,53 @@
 
                             <!-- Tags Row -->
                             <div class="boxy-tags-row">
-                                ${tags.length > 0 ? tags.slice(0, 3).map(t => `<span class="tag-pill">#${escapeHtml(t)}</span>`).join('') : '<span class="tag-pill">Tags</span>'}
+                                ${tags.length > 0 ? tags.slice(0, 3).map(t => `<span class="tag-pill">#${escapeHtml(t)}</span>`).join('') : '<span class="tag-pill">#bookmark</span>'}
                             </div>
 
                             <!-- Expandable AI Takeaways -->
                             <div class="boxy-takeaways-drawer">
-                                <div style="font-size:11px; font-weight:700; color:var(--accent); margin-bottom:4px;">💡 AI Takeaways:</div>
+                                <div style="font-size:11px; font-weight:700; color:#fbbf24; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                    <span>AI Key Takeaways</span>
+                                </div>
                                 ${points.length > 0 ? `
                                     <ul>${points.slice(0, 3).map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
                                 ` : `<div>${escapeHtml(r.summary || 'Saved bookmark')}</div>`}
                             </div>
 
-                            <!-- Bottom Toolbar (Matching Image 3 Icons) -->
+                            <!-- Bottom Action Toolbar (Linear/HugeIcons style) -->
                             <div class="boxy-toolbar">
                                 <button class="tool-btn btn-sparkle" title="Toggle AI Takeaways" onclick="toggleTakeaways(${r.id})">
-                                    ✨
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                                    </svg>
                                 </button>
                                 <button class="tool-btn" title="Copy Link" onclick="copyLink('${escapeHtml(r.url)}', this)">
-                                    📋
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="13" height="13" x="9" y="9" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
                                 </button>
                                 <button class="tool-btn" title="Details Drawer" onclick="openDrawer(${r.id})">
-                                    ℹ️
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" x2="12" y1="16" y2="12"/>
+                                        <line x1="12" x2="12.01" y1="8" y2="8"/>
+                                    </svg>
                                 </button>
                                 <a href="${escapeHtml(r.url)}" target="_blank" class="tool-btn" title="Open Original Link" onclick="event.stopPropagation()">
-                                    🔗
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M15 3h6v6"/>
+                                        <path d="M10 14 21 3"/>
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                    </svg>
                                 </a>
                                 <button class="tool-btn btn-delete" title="Delete Bookmark" onclick="deleteReel(${r.id})">
-                                    🗑️
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 6h18"/>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                    </svg>
                                 </button>
                             </div>
 
@@ -1243,8 +1370,14 @@
         function copyLink(url, btn) {
             navigator.clipboard.writeText(url).then(() => {
                 const orig = btn.innerHTML;
-                btn.innerHTML = '✅';
-                setTimeout(() => { btn.innerHTML = orig; }, 1200);
+                btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+                btn.style.borderColor = 'rgba(52, 211, 153, 0.4)';
+                btn.style.background = 'rgba(52, 211, 153, 0.12)';
+                setTimeout(() => { 
+                    btn.innerHTML = orig; 
+                    btn.style.borderColor = '';
+                    btn.style.background = '';
+                }, 1200);
             });
         }
 
@@ -1254,7 +1387,7 @@
             if (!reel) return;
             activeReel = reel;
 
-            document.getElementById('drawerIcon').textContent = getEmoji(reel.category);
+            document.getElementById('drawerIcon').innerHTML = `<div style="width:40px; height:40px; border-radius:10px; background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.25); display:flex; align-items:center; justify-content:center; color:#c4b5fd;">${getCategorySvg(reel.category)}</div>`;
             document.getElementById('drawerTitle').textContent = getCleanHeading(reel);
 
             const thumbContainer = document.getElementById('drawerThumbContainer');
@@ -1265,7 +1398,7 @@
             } else {
                 thumbContainer.style.display = 'none';
             }
-            document.getElementById('drawerCategory').textContent = `${getEmoji(reel.category)} ${reel.category || 'Other'}`;
+            document.getElementById('drawerCategory').innerHTML = `<div style="display:flex; align-items:center; gap:6px;">${getCategorySvg(reel.category)} <span>${escapeHtml(reel.category || 'Other')}</span></div>`;
             document.getElementById('drawerSubcategory').textContent = reel.subcategory || 'General';
             document.getElementById('drawerPlatform').textContent = (reel.platform || 'link').toUpperCase();
             document.getElementById('drawerDate').textContent = reel.created_at || '-';
