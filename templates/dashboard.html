@@ -22,8 +22,8 @@
             --text-main: #f4f4f7;
             --text-muted: #9ba1ad;
             --text-dim: #606470;
-            --accent: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.25);
+            --accent: #6E60EE;
+            --accent-glow: rgba(110, 96, 238, 0.25);
             --green: #10b981;
             --blue: #38bdf8;
             --pink: #f43f5e;
@@ -91,7 +91,7 @@
         }
 
         .suno-brand span {
-            color: #8b5cf6;
+            color: #6E60EE;
         }
 
         .sidebar.collapsed .suno-brand {
@@ -167,10 +167,14 @@
         }
 
         .nav-item.active {
-            background: rgba(255, 255, 255, 0.11); /* Soft Suno capsule highlight */
+            background: rgba(110, 96, 238, 0.15); /* Soft Suno capsule highlight with primary tint */
             color: #ffffff;
             font-weight: 600;
             border-left: none;
+        }
+
+        .nav-item.active svg {
+            color: #6E60EE;
         }
 
         .nav-item-left {
@@ -739,8 +743,9 @@
         }
 
         .slider-nav-btn:hover {
-            background: rgba(255, 255, 255, 0.14);
-            border-color: rgba(255, 255, 255, 0.32);
+            background: rgba(110, 96, 238, 0.16);
+            border-color: rgba(110, 96, 238, 0.45);
+            color: #ffffff;
             transform: scale(1.06);
         }
 
@@ -877,8 +882,8 @@
         .boxy-card:hover .boxy-play-circle {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
-            background: rgba(139, 92, 246, 0.9);
-            border-color: rgba(255, 255, 255, 0.45);
+            background: rgba(110, 96, 238, 0.92);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         /* Subtle Corner Category Badge */
@@ -1379,7 +1384,7 @@
 
             <div style="margin-bottom:18px;">
                 <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim); margin-bottom:8px;">AI Summary</div>
-                <div style="background:rgba(139, 92, 246, 0.08); border-left:3px solid var(--accent); padding:12px 14px; border-radius:0 6px 6px 0; font-size:13.5px; line-height:1.6;" id="drawerSummary">-</div>
+                <div style="background:rgba(110, 96, 238, 0.08); border-left:3px solid var(--accent); padding:12px 14px; border-radius:0 6px 6px 0; font-size:13.5px; line-height:1.6;" id="drawerSummary">-</div>
             </div>
 
             <div style="margin-bottom:18px;" id="drawerTakeawaysSection">
@@ -2080,7 +2085,7 @@
             if (!reel) return;
             activeReel = reel;
 
-            document.getElementById('drawerIcon').innerHTML = `<div style="width:40px; height:40px; border-radius:10px; background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.25); display:flex; align-items:center; justify-content:center; color:#c4b5fd;">${getCategorySvg(reel.category)}</div>`;
+            document.getElementById('drawerIcon').innerHTML = `<div style="width:40px; height:40px; border-radius:10px; background:rgba(110,96,238,0.12); border:1px solid rgba(110,96,238,0.25); display:flex; align-items:center; justify-content:center; color:#c7c1fc;">${getCategorySvg(reel.category)}</div>`;
             document.getElementById('drawerTitle').textContent = getCleanHeading(reel);
 
             const thumbContainer = document.getElementById('drawerThumbContainer');
