@@ -1,7 +1,7 @@
 # Reelbox 📦 — Product Design Case Study
 ## Designing an AI-Powered Second Brain for Short-Form Video Bookmarks
 
-> **Live Product:** [reelbox-8krs.onrender.com/?token=GonpuawSsMIYxeV_sGUIuA](https://reelbox-8krs.onrender.com/?token=GonpuawSsMIYxeV_sGUIuA)  
+> **Live Product:** [reelbox-8krs.onrender.com](https://reelbox-8krs.onrender.com) (or [Live Demo Vault ↗](https://reelbox-8krs.onrender.com/?demo=true))  
 > **Role:** Product Designer (Product Thinking, UX Research, Interaction Design, Visual Design & Vibe Coding)  
 > **Platform:** Responsive Web App + Telegram Ingestion Flow  
 > **Design Stack:** Mobbin (Arcade / Linear / Notion / Raycast benchmarks), Vanilla HTML/CSS/JS, Google Gemini AI  

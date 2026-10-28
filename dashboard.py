@@ -31,10 +31,90 @@ async def startup():
 
 
 @app.get("/", response_class=HTMLResponse)
-async def dashboard():
-    """Serve the Notion-style dashboard page."""
+async def home(token: str = Query(None), demo: str = Query(None), vault: str = Query(None)):
+    """
+    Serve dashboard vault if token or demo/vault param is present.
+    Otherwise serve the clean product landing page.
+    """
+    if token or demo or vault:
+        with open(os.path.join(TEMPLATES_DIR, "dashboard.html"), "r", encoding="utf-8") as f:
+            return HTMLResponse(f.read())
+    with open(os.path.join(TEMPLATES_DIR, "landing.html"), "r", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+
+@app.get("/landing", response_class=HTMLResponse)
+async def landing():
+    """Direct route for the product landing page."""
+    with open(os.path.join(TEMPLATES_DIR, "landing.html"), "r", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+
+@app.get("/vault", response_class=HTMLResponse)
+async def vault():
+    """Direct route for dashboard vault."""
     with open(os.path.join(TEMPLATES_DIR, "dashboard.html"), "r", encoding="utf-8") as f:
         return HTMLResponse(f.read())
+
+
+@app.get("/case-study", response_class=HTMLResponse)
+async def case_study():
+    """Direct route for Product Design Case Study."""
+    with open(os.path.join(TEMPLATES_DIR, "case_study.html"), "r", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+
+@app.get("/api/demo/reels")
+async def api_demo_reels(
+    category: str = Query(None),
+    platform: str = Query(None),
+    search: str = Query(None),
+    sort_by: str = Query("newest"),
+    limit: int = Query(200, le=500),
+    offset: int = Query(0),
+):
+    """Read-only demo reels showcase for public visitors."""
+    users = await get_all_users_with_reels()
+    if not users:
+        return JSONResponse([])
+    demo_user_id = users[0]["user_id"]
+    reels = await get_reels_by_user(
+        demo_user_id,
+        category=category,
+        platform=platform,
+        search=search,
+        sort_by=sort_by,
+        limit=limit,
+        offset=offset
+    )
+    return JSONResponse(reels)
+
+
+@app.get("/api/demo/categories")
+async def api_demo_categories():
+    """Read-only demo categories for showcase."""
+    users = await get_all_users_with_reels()
+    if not users:
+        return JSONResponse([])
+    demo_user_id = users[0]["user_id"]
+    cats = await get_categories_by_user(demo_user_id)
+    return JSONResponse(cats)
+
+
+@app.get("/api/demo/stats")
+async def api_demo_stats():
+    """Read-only demo stats for showcase."""
+    users = await get_all_users_with_reels()
+    if not users:
+        return JSONResponse({"total_reels": 0, "total_categories": 0, "categories": []})
+    demo_user_id = users[0]["user_id"]
+    count = await get_reel_count(demo_user_id)
+    cats = await get_categories_by_user(demo_user_id)
+    return JSONResponse({
+        "total_reels": count,
+        "total_categories": len(cats),
+        "categories": cats
+    })
 
 
 @app.get("/api/users")

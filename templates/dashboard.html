@@ -1313,7 +1313,16 @@
             });
 
             const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token') || localStorage.getItem('reelbox_vault_token');
+            const isDemo = urlParams.get('demo') === 'true';
+            const token = urlParams.get('token') || (!isDemo ? localStorage.getItem('reelbox_vault_token') : null);
+
+            if (isDemo) {
+                currentUser = 'demo';
+                const switcher = document.querySelector('.user-switcher');
+                if (switcher) switcher.style.display = 'none';
+                await refreshVault();
+                return;
+            }
 
             if (token) {
                 try {
@@ -1401,7 +1410,8 @@
 
         // ── SIDEBAR CATEGORIES ──
         async function loadCategories() {
-            categoriesData = await (await fetch(`/api/reels/${currentUser}/categories`)).json();
+            const url = currentUser === 'demo' ? `/api/demo/categories` : `/api/reels/${currentUser}/categories`;
+            categoriesData = await (await fetch(url)).json();
             const total = categoriesData.reduce((s, c) => s + c.count, 0);
             document.getElementById('totalReelsCount').textContent = total;
 
@@ -1524,7 +1534,8 @@
 
         // ── REELS FETCHING & FILTERING ──
         async function loadReels() {
-            let url = `/api/reels/${currentUser}?limit=350`;
+            let baseUrl = currentUser === 'demo' ? `/api/demo/reels` : `/api/reels/${currentUser}`;
+            let url = `${baseUrl}?limit=350`;
             if (selectedCategory) url += `&category=${encodeURIComponent(selectedCategory)}`;
 
             if (selectedPlatform && selectedPlatform !== 'all') {
@@ -1862,6 +1873,10 @@
         }
 
         async function deleteReel(id) {
+            if (currentUser === 'demo') {
+                alert("Demo Showcase Vault: Deletion is disabled in public demo mode.");
+                return;
+            }
             if (!confirm(`Delete bookmark #${id} from your vault?`)) return;
             try {
                 await fetch(`/api/reels/${currentUser}/${id}`, { method: 'DELETE' });

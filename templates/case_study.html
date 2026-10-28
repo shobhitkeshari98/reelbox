@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reelbox — Product Design Case Study</title>
+    <link rel="icon" href="/static/logo_icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #090a0f;
+            --bg-card: #111219;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --accent: #8b5cf6;
+            --accent-bright: #a78bfa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.7;
+            padding: 0 20px 80px;
+        }
+
+        .cs-nav {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .btn-back:hover { color: #fff; }
+
+        .cs-container {
+            max-width: 820px;
+            margin: 40px auto 0;
+        }
+
+        .cs-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-bright);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: clamp(30px, 4.5vw, 44px);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .cs-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 28px 0 44px;
+            font-size: 13px;
+        }
+
+        .meta-col .label {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .meta-col .val {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin: 44px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin: 24px 0 10px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #cbd5e1;
+            margin-bottom: 18px;
+        }
+
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+            font-size: 14.5px;
+        }
+
+        li { margin-bottom: 8px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 13.5px;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        td { color: #cbd5e1; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12.5px;
+            color: var(--accent-bright);
+        }
+
+        .callout-box {
+            background: rgba(139, 92, 246, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 24px 0;
+            font-size: 14.5px;
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="cs-nav">
+        <a href="/" class="btn-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>Back to Reelbox</span>
+        </a>
+        <a href="/vault?demo=true" style="color: var(--accent-bright); font-size: 13px; font-weight: 600; text-decoration: none;">
+            Explore Live Demo Vault ↗
+        </a>
+    </nav>
+
+    <main class="cs-container">
+        <span class="cs-badge">Product Design Portfolio Case Study</span>
+        <h1>Reelbox: Designing an AI-Powered Second Brain for Short-Form Video</h1>
+        <p style="font-size: 17px; color: var(--text-muted);">
+            How I designed and shipped a zero-friction personal knowledge vault that saves reels in 1 tap, synthesizes key takeaways with AI in &lt; 3 seconds, and eliminates the "Saved Bookmark Blackhole."
+        </p>
+
+        <div class="cs-meta-grid">
+            <div class="meta-col">
+                <div class="label">Role</div>
+                <div class="val">Product &amp; UI/UX Designer</div>
+            </div>
+            <div class="meta-col">
+                <div class="label">Discipline</div>
+                <div class="val">UX Research, UI Systems, Vibe Coding</div>
+            </div>
+            <div class="meta-col">
+                <div class="label">Platforms</div>
+                <div class="val">Web App &amp; Telegram Bot</div>
+            </div>
+            <div class="meta-col">
+                <div class="label">Live Prototype</div>
+                <div class="val"><a href="/vault?demo=true" style="color:var(--accent-bright);">Live Demo Vault ↗</a></div>
+            </div>
+        </div>
+
+        <h2>1. The Problem: The "Bookmark Black Hole"</h2>
+        <p>
+            Digital creators, engineers, and designers save dozens of short-form videos daily across Instagram Reels, YouTube Shorts, and TikTok. These videos contain valuable Figma plugins, AI tools, UI interactions, and tutorials.
+        </p>
+        <p>
+            Yet, <strong>95% of saved videos are never watched again.</strong> Social apps make saving effortless (one tap), but make retrieval painful:
+        </p>
+        <ul>
+            <li><strong>Zero Searchability:</strong> Native bookmark collections cannot be searched by keyword, tool name, or author.</li>
+            <li><strong>Complete Context Loss:</strong> Video thumbnails provide zero context. To recall why you saved a 30-second clip, you must re-watch the full video.</li>
+            <li><strong>Manual Categorization Fails:</strong> Creating folders manually on mobile is tedious and quickly abandoned.</li>
+        </ul>
+
+        <div class="callout-box">
+            <strong>The Core UX Paradox:</strong> Saving is impulsive (&lt; 1s, high dopamine). Retrieval is punitive (&gt; 5 min, high friction). Reelbox bridges this gap by automating synthesis and offering instant <code>Ctrl K</code> search.
+        </div>
+
+        <h2>2. Product Principles &amp; Strategy</h2>
+        <p>To eliminate friction, I anchored the product in four foundational design principles:</p>
+        <ol>
+            <li><strong>Respect Existing Habits (Zero Ingestion Friction):</strong> Don't force users to install a standalone bookmarking app. Live inside Telegram where they already share links every day.</li>
+            <li><strong>Surface Information Scent Upfront:</strong> Display 3 AI-generated bullet points on the card surface so insights are readable in 3 seconds without pressing play.</li>
+            <li><strong>Progressive Disclosure:</strong> Keep card resting states calm and uncluttered (16:9 thumbnail, index number, category tag, headline); reveal deep takeaways on demand.</li>
+            <li><strong>Passwordless Friction-Free Access:</strong> Use private cryptographic magic tokens (<code>/?token=...</code>) instead of email/password sign-up barriers.</li>
+        </ol>
+
+        <h2>3. UI/UX Craft &amp; Iteration Milestones</h2>
+        <p>
+            Reelbox was designed through continuous, rigorous iteration inspired by Mobbin benchmarks (Arcade, Linear, and Notion):
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Design Challenge</th>
+                    <th>Previous State</th>
+                    <th>The Refined Solution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Card Architecture</strong></td>
+                    <td>Generic, boxy cards with emoji buttons</td>
+                    <td>16:9 Arcade-style cards with monospace index badges (<code>#01</code>) and frosted-glass ghost play buttons.</td>
+                </tr>
+                <tr>
+                    <td><strong>Visual Noise</strong></td>
+                    <td>Cluttered with timestamps ("14h ago") &amp; horizontal dividing lines</td>
+                    <td>Subtracted non-essential metadata; focused entirely on clean headlines and high-contrast anchors.</td>
+                </tr>
+                <tr>
+                    <td><strong>Color Balance</strong></td>
+                    <td>Aggressive crimson red tags everywhere</td>
+                    <td>Harmonized tags to quiet, refined slate grey (<code>#94a3b8</code>) matching index badges.</td>
+                </tr>
+                <tr>
+                    <td><strong>Takeaways Ergonomics</strong></td>
+                    <td>Awkward top modal overlay that covered video preview</td>
+                    <td>Re-engineered into an inline, bottom-docked accordion drawer that expands with zero layout jump.</td>
+                </tr>
+                <tr>
+                    <td><strong>Keyboard Search</strong></td>
+                    <td>Heavy grey box encasing <code>Ctrl K</code></td>
+                    <td>Unboxed <code>Ctrl K</code> into subtle, vertically centered monospace hint text inside search bar.</td>
+                </tr>
+                <tr>
+                    <td><strong>Platform Filter</strong></td>
+                    <td>Native OS <code>&lt;select&gt;</code> menu that ruined dark mode</td>
+                    <td>Bespoke Linear-grade popover dropdown with animated rotating chevrons and active brand glyphs.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4. "Vibe Coding" as a Product Designer Superpower</h2>
+        <p>
+            Instead of handing off static Figma frames with placeholder <em>Lorem Ipsum</em>, I used <strong>Vibe Coding</strong> with AI models to build and test the real product in production:
+        </p>
+        <ul>
+            <li><strong>Designing with Raw, Real-World Data:</strong> Designed for actual scraped social media captions, messy titles, and missing thumbnails.</li>
+            <li><strong>Validating 60fps Micro-Interactions:</strong> Tuned hover states, accordion transitions, and popover dismissal curves directly in the browser.</li>
+            <li><strong>Zero Handoff Loss:</strong> The design artifact <em>is</em> the working product running live on Render cloud.</li>
+        </ul>
+
+        <h2>5. Measurable Outcomes</h2>
+        <ul>
+            <li><strong>Ingestion Friction:</strong> Reduced to 1 tap (Share to Telegram).</li>
+            <li><strong>Retrieval Velocity:</strong> 5-minute manual scrolling reduced to &lt; 1 second via <code>Ctrl K</code>.</li>
+            <li><strong>Time-to-Insight:</strong> 60-second video scrubbing reduced to 3-second bullet reading.</li>
+            <li><strong>Infrastructure Cost:</strong> $0.00/month (100% free-tier architecture on Render + Gemini).</li>
+        </ul>
+
+        <div style="margin-top: 50px; text-align: center; padding-top: 30px; border-top: 1px solid var(--border-subtle);">
+            <a href="/vault?demo=true" style="display: inline-block; background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none;">
+                Test Live Demo Vault Now ↗
+            </a>
+        </div>
+    </main>
+
+</body>
+</html>

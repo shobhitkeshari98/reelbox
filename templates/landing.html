@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reelbox — AI-Powered Second Brain for Saved Reels & Bookmarks</title>
+    <meta name="description" content="Forward any Instagram Reel or YouTube Short to Telegram. AI extracts key takeaways, categorizes topics, and files it into your private, searchable visual vault.">
+    
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Reelbox — AI-Powered Second Brain for Saved Reels">
+    <meta property="og:description" content="Save reels on Telegram → AI extracts key takeaways → Browse in a private visual vault.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="/static/logo_icon.svg" type="image/svg+xml">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-canvas: #08090d;
+            --bg-card: #0f1016;
+            --bg-card-hover: #14151d;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.14);
+            --border-glow: rgba(139, 92, 246, 0.35);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.2);
+            --accent-bright: #a78bfa;
+            --ground: #0a0b10;
+            --ink: #f1f5f9;
+            --line: rgba(255, 255, 255, 0.09);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ── Subtle Background Gradients ── */
+        .ambient-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+            background: radial-gradient(ellipse 65% 50% at 50% -10%, rgba(139, 92, 246, 0.18), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Navbar ── */
+        .landing-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 9, 13, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-subtle);
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -0.4px;
+        }
+
+        .nav-brand img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-brand span {
+            color: var(--accent-bright);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            transition: color 0.15s ease;
+        }
+
+        .nav-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            height: 36px;
+            padding: 0 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-medium);
+            color: #f1f5f9;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 36px;
+            padding: 0 16px;
+            font-size: 12.5px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 18px rgba(139, 92, 246, 0.35);
+            transition: all 0.18s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #7c3aed;
+            box-shadow: 0 0 24px rgba(139, 92, 246, 0.55);
+            transform: translateY(-1px);
+        }
+
+        /* ── Container Layout ── */
+        .landing-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Top Announcement Bar ── */
+        .announcement-bar {
+            margin: 28px auto 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.28);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-bright);
+        }
+
+        .announcement-bar .badge {
+            background: var(--accent);
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* ── Hero Section ── */
+        .hero-section {
+            text-align: center;
+            padding: 24px 0 64px;
+        }
+
+        .hero-title {
+            font-size: clamp(34px, 5.5vw, 60px);
+            font-weight: 800;
+            line-height: 1.14;
+            letter-spacing: -1.2px;
+            margin-top: 20px;
+            color: #ffffff;
+            max-width: 860px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(15px, 1.8vw, 18px);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 20px auto 32px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            height: 46px;
+            padding: 0 22px;
+            font-size: 14px;
+            border-radius: 10px;
+        }
+
+        /* Metric Badges */
+        .metric-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-subtle);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .metric-item svg {
+            color: var(--accent-bright);
+        }
+
+        /* ── Hairline Interactive Visual Centerpiece ── */
+        .hairline-hero-stage-card {
+            background: #0b0c12;
+            border: 1px solid var(--border-medium);
+            border-radius: 16px;
+            padding: 16px 20px 20px;
+            box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04);
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+            text-align: left;
+        }
+
+        .hairline-stage-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .stage-title-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stage-title-left .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px #22c55e;
+            display: inline-block;
+        }
+
+        #hl-readout {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-bright);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 320px;
+            text-align: right;
+        }
+
+        .hairline-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 10px;
+            background: #08090d;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 340px;
+        }
+
+        .hairline-canvas-wrapper iframe {
+            width: 100%;
+            height: 350px;
+            border: none;
+            display: block;
+        }
+
+        .hairline-caption-footer {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hairline-caption-footer span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ── Comparison Section: The Problem ── */
+        .section-header {
+            text-align: center;
+            margin: 90px 0 44px;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-bright);
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-size: clamp(26px, 3.8vw, 38px);
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .section-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .compare-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 30px 28px;
+            position: relative;
+        }
+
+        .compare-card.bad {
+            border-color: rgba(244, 63, 94, 0.2);
+            background: linear-gradient(180deg, rgba(244, 63, 94, 0.03) 0%, var(--bg-card) 100%);
+        }
+
+        .compare-card.good {
+            border-color: rgba(139, 92, 246, 0.35);
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, var(--bg-card) 100%);
+            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.15);
+        }
+
+        .compare-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .compare-icon-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .compare-card.bad .compare-icon-badge {
+            background: rgba(244, 63, 94, 0.12);
+            color: #f43f5e;
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+
+        .compare-card.good .compare-icon-badge {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-bright);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .compare-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .compare-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .compare-list li {
+            font-size: 13.5px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .compare-list li svg {
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        /* ── How It Works (3 Steps) ── */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 30px 24px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+        }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-bright);
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .step-card h3 {
+            font-size: 16.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .step-card p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        /* ── Interactive Live Demo Sandbox ── */
+        .demo-sandbox-card {
+            background: #0f1016;
+            border: 1px solid var(--border-medium);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.7);
+            margin-top: 36px;
+        }
+
+        .sandbox-topbar {
+            background: #14151e;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .sandbox-search-box {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+            max-width: 440px;
+        }
+
+        .sandbox-search-input {
+            width: 100%;
+            height: 36px;
+            background: #0c0d12;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 12.5px;
+            padding: 0 40px 0 34px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .sandbox-search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            pointer-events: none;
+        }
+
+        .sandbox-filter-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 36px;
+            padding: 0 12px;
+            background: #0c0d12;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .sandbox-cards-grid {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 20px;
+            background: #090a0f;
+        }
+
+        /* Arcade Card Mockup */
+        .mock-card {
+            background: #12131b;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.18s ease;
+        }
+
+        .mock-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .mock-thumb {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            background: #1c1d27;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mock-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+
+        .mock-badge-num {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            background: rgba(8, 8, 12, 0.8);
+            backdrop-filter: blur(6px);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .mock-badge-cat {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            background: rgba(8, 8, 12, 0.8);
+            backdrop-filter: blur(6px);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-transform: uppercase;
+        }
+
+        .mock-body {
+            padding: 16px 16px 14px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .mock-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #f8fafc;
+            line-height: 1.45;
+            margin-bottom: 14px;
+        }
+
+        .mock-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-takeaways-mock {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 9px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.22);
+            color: #fbbf24;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .mock-icons-right {
+            display: flex;
+            gap: 6px;
+            color: var(--text-dim);
+        }
+
+        .mock-drawer {
+            display: none;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .mock-card.open .mock-drawer {
+            display: block;
+        }
+
+        /* ── Case Study Banner ── */
+        .case-study-callout {
+            margin: 90px 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(56, 189, 248, 0.08) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.28);
+            border-radius: 16px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .case-study-info {
+            max-width: 620px;
+        }
+
+        .case-study-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--accent-bright);
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .case-study-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .case-study-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Footer ── */
+        .landing-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 48px 0 60px;
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-dim);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 860px) {
+            .landing-nav { padding: 0 16px; }
+            .nav-links { display: none; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .case-study-callout { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <!-- ── NAVIGATION ── -->
+    <header class="landing-nav">
+        <a href="/" class="nav-brand">
+            <img src="/static/logo_icon.svg" alt="Reelbox Logo">
+            <div>Reel<span>box</span></div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#problem">The Problem</a>
+            <a href="#demo">Live Demo</a>
+            <a href="/case-study">Design Case Study</a>
+        </nav>
+
+        <div class="nav-cta-group">
+            <a href="/vault?demo=true" class="btn-outline">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                <span>Live Demo</span>
+            </a>
+            <a href="https://t.me/ReelboxxBot" target="_blank" class="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .34z"/></svg>
+                <span>Launch Bot</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="landing-container">
+        
+        <!-- ── HERO SECTION ── -->
+        <section class="hero-section">
+            <div class="announcement-bar">
+                <span class="badge">New</span>
+                <span>Reelbox 2.0: Instant Telegram Save + Gemini AI Takeaways</span>
+            </div>
+
+            <h1 class="hero-title">
+                Turn your saved reels into an organized, <span>searchable second brain.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Stop losing game-changing AI tools, UI design inspiration, and tutorials in Instagram & YouTube bookmark black holes. Forward any reel to Telegram—AI extracts 3 key takeaways and files it into your searchable vault in &lt; 3 seconds.
+            </p>
+
+            <div class="hero-actions">
+                <a href="https://t.me/ReelboxxBot" target="_blank" class="btn-primary btn-large">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .34z"/></svg>
+                    <span>Save a Reel on Telegram</span>
+                </a>
+                <a href="/vault?demo=true" class="btn-outline btn-large">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                    <span>Explore Live Demo Vault</span>
+                </a>
+            </div>
+
+            <!-- Value Metric Pills -->
+            <div class="metric-badges">
+                <div class="metric-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    <span>1-Tap Telegram Ingestion</span>
+                </div>
+                <div class="metric-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>&lt; 3s Gemini AI Synthesis</span>
+                </div>
+                <div class="metric-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <span>Instant Ctrl+K Retrieval</span>
+                </div>
+                <div class="metric-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Private Magic Token Vaults</span>
+                </div>
+            </div>
+
+            <!-- ── INTERACTIVE HAIRLINE FIGURE CENTERPIECE ── -->
+            <div class="hairline-hero-stage-card">
+                <div class="hairline-stage-header">
+                    <div class="stage-title-left">
+                        <span class="pulse-dot"></span>
+                        <span>Reelbox Vault Isometric Model</span>
+                    </div>
+                    <div id="hl-readout">hover cards to preview</div>
+                </div>
+
+                <!-- Hairline Figure Host -->
+                <div class="hairline-canvas-wrapper">
+                    <iframe src="/static/hairline-vault.html?theme=dark" title="Hairline Interactive Figure: Reelbox Vault"></iframe>
+                </div>
+
+                <div class="hairline-caption-footer">
+                    <span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        Hairline Engine: Move cursor across the cards to riffle and inspect indexed bookmarks.
+                    </span>
+                    <span>Single-stroke SVG · 60fps</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── THE PROBLEM: SAVED REEL BLACKHOLE ── -->
+        <section id="problem">
+            <div class="section-header">
+                <span class="section-tag">The Problem</span>
+                <h2 class="section-title">The "Bookmark Black Hole"</h2>
+                <p class="section-desc">Saving reels takes 1 second. Finding them later takes 5 minutes of infinite scrolling. Here is why native bookmarks fail human memory.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <!-- Native Instagram/YouTube -->
+                <div class="compare-card bad">
+                    <div class="compare-header">
+                        <div class="compare-icon-badge">✕</div>
+                        <div>
+                            <h3>Native Instagram / YouTube Save</h3>
+                            <p style="font-size: 12.5px; color: #f43f5e;">Engineered for scrolling, not retrieval</p>
+                        </div>
+                    </div>
+                    <ul class="compare-list">
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span><strong>Zero Searchability:</strong> Cannot search your saved bookmarks by tool name, topic, or keyword.</span>
+                        </li>
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span><strong>Total Context Loss:</strong> Must scrub through a 60-second video just to remember why you saved it.</span>
+                        </li>
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span><strong>Manual Collections Fail:</strong> Creating manual folders on mobile is high-friction and quickly abandoned.</span>
+                        </li>
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span><strong>Data Siloed Forever:</strong> No way to export your saved videos into Notion, Obsidian, or Markdown.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Reelbox AI Vault -->
+                <div class="compare-card good">
+                    <div class="compare-header">
+                        <div class="compare-icon-badge">✓</div>
+                        <div>
+                            <h3>Reelbox AI Second Brain</h3>
+                            <p style="font-size: 12.5px; color: var(--accent-bright);">Engineered for instant information scent</p>
+                        </div>
+                    </div>
+                    <ul class="compare-list">
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span><strong>Instant Global Search (Ctrl K):</strong> Real-time debounced search across titles, summaries, tools, and tags.</span>
+                        </li>
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span><strong>3-Second Key Takeaways:</strong> Gemini AI extracts 3 bullet points upfront—no video re-watching required.</span>
+                        </li>
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span><strong>Zero-Touch Auto Folders:</strong> AI automatically organizes bookmarks into Tech, Design, Finance, Tools, etc.</span>
+                        </li>
+                        <li>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span><strong>1-Click Notion Export:</strong> Download your entire library as Notion-ready Markdown (.md) or CSV.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── HOW IT WORKS ── -->
+        <section id="how-it-works">
+            <div class="section-header">
+                <span class="section-tag">Frictionless Workflow</span>
+                <h2 class="section-title">How Reelbox Works</h2>
+                <p class="section-desc">No new mobile apps to download. Reelbox lives right where you already browse and share.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <span class="step-num">Step 01</span>
+                    <h3>Forward via Telegram</h3>
+                    <p>When browsing on Instagram, YouTube Shorts, or TikTok, tap <strong>Share → Telegram → @ReelboxxBot</strong>. That's it—one single tap from your natural habits.</p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-num">Step 02</span>
+                    <h3>AI Auto-Synthesis in &lt; 3s</h3>
+                    <p>Google Gemini AI scrapes the reel metadata, cleans headlines, extracts 3 actionable takeaways, identifies tools, and files it into smart categories.</p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-num">Step 03</span>
+                    <h3>Search & Retrieve in Seconds</h3>
+                    <p>Open your private vault on desktop or mobile. Hit <strong>Ctrl K</strong> to find exact tools, toggle platform filters (Instagram/YouTube/TikTok), or export to Notion.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── INTERACTIVE DEMO SANDBOX ── -->
+        <section id="demo">
+            <div class="section-header">
+                <span class="section-tag">Interactive Sandbox</span>
+                <h2 class="section-title">Try The Vault Interface</h2>
+                <p class="section-desc">Experience the Arcade-inspired card layout, instant search, and inline AI takeaways directly below.</p>
+            </div>
+
+            <div class="demo-sandbox-card">
+                <!-- Sandbox Controls -->
+                <div class="sandbox-topbar">
+                    <div class="sandbox-search-box">
+                        <svg class="sandbox-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <input type="text" id="demoSearchInput" class="sandbox-search-input" placeholder="Type 'AI', 'UI', or 'career' to filter..." oninput="filterDemoCards()">
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <div class="sandbox-filter-pill">
+                            <span style="color: #e1306c; display:inline-flex;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span>
+                            <span>Instagram</span>
+                        </div>
+                        <a href="/vault?demo=true" class="btn-primary" style="height:36px; padding:0 12px; font-size:12px;">
+                            <span>Open Full Vault ↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sandbox Cards -->
+                <div class="sandbox-cards-grid" id="sandboxCards">
+                    <!-- Card 1 -->
+                    <div class="mock-card" data-title="omnidimension ai agents for omnichannel customer support tech ai">
+                        <div class="mock-thumb">
+                            <span class="mock-badge-num">#01</span>
+                            <span class="mock-badge-cat">Tech & AI</span>
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80" alt="AI Agent">
+                        </div>
+                        <div class="mock-body">
+                            <h4 class="mock-title">OmniDimension AI Agents for Omnichannel Customer Support</h4>
+                            <div class="mock-footer">
+                                <button type="button" class="btn-takeaways-mock" onclick="toggleMockDrawer(this)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                    <span>AI Takeaways</span>
+                                </button>
+                                <div class="mock-icons-right">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                            </div>
+                            <div class="mock-drawer">
+                                <strong>Key Points:</strong>
+                                <ul style="margin-left: 16px; margin-top: 4px;">
+                                    <li>Preserves user chat context across WhatsApp, Web & Calls.</li>
+                                    <li>Automates lead qualification without human intervention.</li>
+                                    <li>Integrates with custom CRM webhooks in one click.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="mock-card" data-title="new ui component library launch modern figma tokens design">
+                        <div class="mock-thumb">
+                            <span class="mock-badge-num">#02</span>
+                            <span class="mock-badge-cat">UI / UX</span>
+                            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80" alt="UI Library">
+                        </div>
+                        <div class="mock-body">
+                            <h4 class="mock-title">New UI Component Library Launch with Dark Mode Tokens</h4>
+                            <div class="mock-footer">
+                                <button type="button" class="btn-takeaways-mock" onclick="toggleMockDrawer(this)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                    <span>AI Takeaways</span>
+                                </button>
+                                <div class="mock-icons-right">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                            </div>
+                            <div class="mock-drawer">
+                                <strong>Key Points:</strong>
+                                <ul style="margin-left: 16px; margin-top: 4px;">
+                                    <li>Pre-built React & Tailwind primitives with accessibility.</li>
+                                    <li>Subtle micro-interactions tuned for 60fps animations.</li>
+                                    <li>Supports zero-config dark/light themes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="mock-card" data-title="growth strategies and observations to land tech job career business">
+                        <div class="mock-thumb">
+                            <span class="mock-badge-num">#03</span>
+                            <span class="mock-badge-cat">Career</span>
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop&q=80" alt="Career growth">
+                        </div>
+                        <div class="mock-body">
+                            <h4 class="mock-title">Proven Strategies & Observations to Land Tech Jobs in 2026</h4>
+                            <div class="mock-footer">
+                                <button type="button" class="btn-takeaways-mock" onclick="toggleMockDrawer(this)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                    <span>AI Takeaways</span>
+                                </button>
+                                <div class="mock-icons-right">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                            </div>
+                            <div class="mock-drawer">
+                                <strong>Key Points:</strong>
+                                <ul style="margin-left: 16px; margin-top: 4px;">
+                                    <li>Showcase real live products over static Figma mockups.</li>
+                                    <li>Optimize portfolio for the 30-second hiring manager skim.</li>
+                                    <li>Frame personal projects as solutions to real user pain points.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── RECRUITER / DESIGNER CASE STUDY CALLOUT ── -->
+        <div class="case-study-callout">
+            <div class="case-study-info">
+                <div class="case-study-tag">Portfolio & Process</div>
+                <h3 class="case-study-title">Product Design Case Study</h3>
+                <p class="case-study-desc">
+                    Curious about the design thinking, behavioral problem framing, Mobbin benchmarks, and UI/UX craft iterations behind Reelbox? Read the full interactive case study written for Design Hiring Managers.
+                </p>
+            </div>
+            <a href="/case-study" class="btn-primary" style="height: 44px; padding: 0 20px; font-size: 13.5px;">
+                <span>Read Design Case Study ↗</span>
+            </a>
+        </div>
+
+        <!-- ── FOOTER ── -->
+        <footer class="landing-footer">
+            <div class="footer-left">
+                <img src="/static/logo_icon.svg" width="20" height="20" alt="Logo">
+                <span>Reelbox · Designed by Product & UI/UX Designer</span>
+            </div>
+            <div class="footer-links">
+                <a href="/vault?demo=true">Live Demo</a>
+                <a href="/case-study">Case Study</a>
+                <a href="https://t.me/ReelboxxBot" target="_blank">Telegram Bot</a>
+                <a href="https://github.com/shobhitkeshari98/reelbox" target="_blank">GitHub</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Interactive Mock Card Accordion Toggle
+        function toggleMockDrawer(btn) {
+            const card = btn.closest('.mock-card');
+            if (card) {
+                card.classList.toggle('open');
+            }
+        }
+
+        // Real-time Mock Filter
+        function filterDemoCards() {
+            const q = document.getElementById('demoSearchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.mock-card');
+            cards.forEach(c => {
+                const text = c.getAttribute('data-title') || '';
+                c.style.display = text.includes(q) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
