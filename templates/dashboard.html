@@ -1772,7 +1772,7 @@
                     <div class="boxy-card" id="card_${r.id}">
                         
                         <!-- 📱 Vertical 9:16 Video Thumbnail (Shorts / Reels Style) -->
-                        <div class="boxy-preview" onclick="openDrawer(${r.id})" title="Click to view details ↗">
+                        <div class="boxy-preview" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
                             ${hasThumb ? `
                                 <img src="/api/thumbnail/${r.id}" referrerpolicy="no-referrer" alt="${escapeHtml(cleanHeading)}" onerror="this.style.display='none'">
                             ` : `
@@ -1796,7 +1796,7 @@
                         <div class="boxy-content">
                             <!-- Title + 3-Dots Action Row -->
                             <div class="shorts-title-row">
-                                <h3 class="arcade-title" onclick="openDrawer(${r.id})" title="${escapeHtml(cleanHeading)}">
+                                <h3 class="arcade-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="${escapeHtml(cleanHeading)}">
                                     ${escapeHtml(cleanHeading)}
                                 </h3>
 
