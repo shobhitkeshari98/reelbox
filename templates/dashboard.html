@@ -754,6 +754,40 @@
             transform: scale(0.94);
         }
 
+        /* Horizontal Slider Track Wrapper & Edge Fade Gradients */
+        .slider-shelf-track-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Right edge fade gradient (signals horizontal slidable content) */
+        .slider-fade-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 80px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.96) 100%);
+            pointer-events: none;
+            z-index: 6;
+            opacity: 1;
+            transition: opacity 0.25s ease;
+        }
+
+        /* Left edge fade gradient (appears when scrolled right) */
+        .slider-fade-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.96) 100%);
+            pointer-events: none;
+            z-index: 6;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
         /* Horizontal Slider Track */
         .horizontal-slider {
             display: flex;
@@ -992,65 +1026,69 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* 3-Dots Floating Dropdown Popover (Opens downwards on bottom side, fixed to never clip) */
+        /* 3-Dots Floating Dropdown Popover (YouTube Music Style, Fixed & Unclipped) */
         .shorts-menu-popover {
             position: fixed;
-            min-width: 195px;
-            background: #14141c;
+            min-width: 205px;
+            background: #212126;
             border: 1px solid rgba(255, 255, 255, 0.14);
             border-radius: 12px;
-            padding: 5px;
-            box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.92), 0 4px 14px rgba(0, 0, 0, 0.6);
+            padding: 6px 0;
+            box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.95), 0 4px 16px rgba(0, 0, 0, 0.7);
             z-index: 99999;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-6px) scale(0.96);
-            transform-origin: top right;
+            transform: scale(0.96);
             transition: opacity 0.14s ease, transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.14s;
             pointer-events: none;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .shorts-menu-popover.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
+            transform: scale(1);
             pointer-events: auto;
         }
 
         .shorts-menu-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 11px;
-            font-size: 12.5px;
+            gap: 12px;
+            padding: 9px 16px;
+            font-size: 13.5px;
             font-weight: 500;
             font-family: inherit;
-            color: #cbd5e1;
+            color: #f1f5f9;
             background: transparent;
             border: none;
-            border-radius: 7px;
+            border-radius: 0;
             cursor: pointer;
             text-decoration: none;
             width: 100%;
             box-sizing: border-box;
             text-align: left;
-            transition: all 0.12s ease;
+            transition: background 0.12s ease, color 0.12s ease;
+        }
+
+        .shorts-menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
         }
 
         .shorts-menu-item svg {
             flex-shrink: 0;
-            width: 14px;
-            height: 14px;
-            color: inherit;
+            width: 15px;
+            height: 15px;
+            color: #cbd5e1;
+            transition: transform 0.12s ease;
         }
 
-        .shorts-menu-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+        .shorts-menu-item:hover svg {
             color: #ffffff;
         }
 
@@ -1059,8 +1097,12 @@
         }
 
         .shorts-menu-item.danger:hover {
-            background: rgba(244, 63, 94, 0.12);
+            background: rgba(244, 63, 94, 0.14);
             color: #fda4af;
+        }
+
+        .shorts-menu-item.danger svg {
+            color: #fb7185;
         }
 
         /* Subtitle / Metadata (Matches "124K views" in YouTube Shorts) */
@@ -1454,6 +1496,9 @@
             }
             if (c.includes('education') || c.includes('book') || c.includes('learn')) {
                 return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>`;
+            }
+            if (c.includes('tool') || c.includes('app') || c.includes('software') || c.includes('util')) {
+                return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`;
             }
             if (c.includes('travel')) {
                 return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`;
@@ -1922,9 +1967,16 @@
 
             html += `</div>`;
             canvas.innerHTML = html;
+
+            // Initialize edge fade gradients for all sliders
+            setTimeout(() => {
+                document.querySelectorAll('.horizontal-slider').forEach(el => {
+                    if (el.id) updateSliderFades(el.id);
+                });
+            }, 80);
         }
 
-        // Render individual slider shelf with heading and arrow buttons
+        // Render individual slider shelf with heading, arrow buttons, and edge fades
         function renderShelfSection(sectionId, title, reels) {
             if (!reels || reels.length === 0) return '';
             return `
@@ -1942,8 +1994,12 @@
                             </button>
                         </div>
                     </div>
-                    <div class="horizontal-slider" id="${sectionId}">
-                        ${reels.map(r => renderCardHtml(r)).join('')}
+                    <div class="slider-shelf-track-wrapper">
+                        <div class="horizontal-slider" id="${sectionId}" onscroll="updateSliderFades('${sectionId}')">
+                            ${reels.map(r => renderCardHtml(r)).join('')}
+                        </div>
+                        <div class="slider-fade-left" id="fade_left_${sectionId}"></div>
+                        <div class="slider-fade-right" id="fade_right_${sectionId}"></div>
                     </div>
                 </section>
             `;
@@ -1955,6 +2011,22 @@
             if (!el) return;
             const scrollAmount = Math.max(300, el.clientWidth * 0.72);
             el.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+            setTimeout(() => updateSliderFades(id), 350);
+        }
+
+        // Update slidable edge gradient indicators
+        function updateSliderFades(id) {
+            const el = document.getElementById(id);
+            const fadeLeft = document.getElementById(`fade_left_${id}`);
+            const fadeRight = document.getElementById(`fade_right_${id}`);
+            if (!el) return;
+            if (fadeLeft) {
+                fadeLeft.style.opacity = el.scrollLeft > 15 ? '1' : '0';
+            }
+            if (fadeRight) {
+                const canScrollRight = el.scrollWidth - el.clientWidth - el.scrollLeft > 15;
+                fadeRight.style.opacity = canScrollRight ? '1' : '0';
+            }
         }
 
         // Render modern vertical video card
@@ -1998,7 +2070,7 @@
 
                             <!-- 3-Dots Menu -->
                             <div class="shorts-menu-wrap">
-                                <button class="shorts-dots-btn" id="dotsBtn_${r.id}" onclick="toggleCardMenu(event, ${r.id})" title="More options" aria-label="More options">
+                                <button class="shorts-dots-btn" onclick="toggleCardMenu(event, this, ${r.id})" title="More options" aria-label="More options">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                         <circle cx="12" cy="5" r="1.8"/>
                                         <circle cx="12" cy="12" r="1.8"/>
@@ -2006,21 +2078,21 @@
                                     </svg>
                                 </button>
 
-                                <div class="shorts-menu-popover" id="cardMenu_${r.id}" onclick="event.stopPropagation()">
+                                <div class="shorts-menu-popover" onclick="event.stopPropagation()">
                                     <button type="button" class="shorts-menu-item" onclick="openDrawer(${r.id}); closeAllCardMenus();">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                                         <span>AI Takeaways & Details</span>
                                     </button>
                                     <button type="button" class="shorts-menu-item" onclick="copyLink('${escapeHtml(r.url)}', this);">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="13" height="13" x="9" y="9" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="13" height="13" x="9" y="9" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                                         <span>Copy Link</span>
                                     </button>
                                     <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="shorts-menu-item" onclick="closeAllCardMenus();">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
                                         <span>Open Original Video</span>
                                     </a>
                                     <button type="button" class="shorts-menu-item danger" onclick="deleteReel(${r.id}); closeAllCardMenus();">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                                         <span>Delete Bookmark</span>
                                     </button>
                                 </div>
@@ -2031,27 +2103,43 @@
             `;
         }
 
-        // Toggle 3-dots card menu popover (Opens downwards on bottom side)
-        function toggleCardMenu(e, id) {
+        // Toggle 3-dots card menu popover (YouTube Music style smart positioning)
+        function toggleCardMenu(e, btn, id) {
             if (e) {
                 e.stopPropagation();
                 e.preventDefault();
             }
-            const menu = document.getElementById(`cardMenu_${id}`);
-            const btn = document.getElementById(`dotsBtn_${id}`);
-            const isShown = menu && menu.classList.contains('show');
+            if (!btn) return;
+            const wrap = btn.closest('.shorts-menu-wrap');
+            if (!wrap) return;
+            const menu = wrap.querySelector('.shorts-menu-popover');
+            if (!menu) return;
+
+            const isShown = menu.classList.contains('show');
             closeAllCardMenus();
-            if (!isShown && menu && btn) {
+            if (!isShown) {
                 const rect = btn.getBoundingClientRect();
-                // Position in bottom side (below the 3-dots button)
+                const menuHeight = 168;
+                const menuWidth = 205;
+
                 menu.style.position = 'fixed';
-                menu.style.top = (rect.bottom + 6) + 'px';
-                
-                const menuWidth = 195;
-                const leftPos = Math.min(window.innerWidth - menuWidth - 12, Math.max(10, rect.right - menuWidth));
-                menu.style.left = leftPos + 'px';
-                menu.style.bottom = 'auto';
                 menu.style.right = 'auto';
+
+                // Check vertical placement (similar to YouTube Music inspiration)
+                if (rect.top > menuHeight + 15) {
+                    // Open directly above the 3-dots button
+                    menu.style.top = (rect.top - menuHeight - 6) + 'px';
+                    menu.style.bottom = 'auto';
+                    menu.style.transformOrigin = 'bottom right';
+                } else {
+                    // Open below the 3-dots button if close to top of viewport
+                    menu.style.top = (rect.bottom + 6) + 'px';
+                    menu.style.bottom = 'auto';
+                    menu.style.transformOrigin = 'top right';
+                }
+
+                const leftPos = Math.min(window.innerWidth - menuWidth - 14, Math.max(10, rect.right - menuWidth));
+                menu.style.left = leftPos + 'px';
 
                 menu.classList.add('show');
                 btn.classList.add('active');
