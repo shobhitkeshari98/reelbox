@@ -237,7 +237,7 @@
             cursor: pointer;
             transition: all 0.14s ease;
             box-sizing: border-box;
-            margin-top: 2px;
+            margin-top: auto; /* Clean bottom pin like Suno */
         }
 
         .suno-profile-pill:hover {
@@ -606,6 +606,51 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            margin-left: auto;
+        }
+
+        /* Topbar Telegram CTA Capsule (Matches Suno / Export Notion Pill CTA) */
+        .btn-topbar-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 9999px;
+            background: #141419;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.16s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        .btn-topbar-cta:hover {
+            background: #202028;
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-topbar-cta:active {
+            transform: scale(0.98);
+        }
+
+        .btn-topbar-cta svg {
+            width: 14px;
+            height: 14px;
+            color: #38bdf8;
+            transition: transform 0.15s ease;
+        }
+
+        .btn-topbar-cta:hover svg {
+            transform: translateX(1px) translateY(-1px);
         }
 
         /* ── Workspace Content Canvas ── */
@@ -993,6 +1038,11 @@
             .topbar { padding: 0 16px; }
             .workspace-canvas { padding: 16px; }
         }
+
+        @media (max-width: 540px) {
+            .btn-topbar-cta span { display: none; }
+            .btn-topbar-cta { padding: 0 11px; }
+        }
     </style>
 </head>
 <body>
@@ -1034,21 +1084,11 @@
             <!-- Dynamic Category Capsules -->
             <div id="sidebarCategories" style="display:flex; flex-direction:column; gap:4px;"></div>
 
-            <!-- Suno User Profile Capsule -->
+            <!-- Suno User Profile Capsule (Pinned cleanly near bottom like Suno) -->
             <div class="suno-profile-pill" onclick="window.location.href='https://t.me/ReelboxxBot'" title="Logged in as Shobhit Keshari">
                 <div class="suno-avatar"></div>
                 <span class="suno-username" id="sidebarUsername">shobhitkeshari98</span>
             </div>
-
-            <!-- Spacer for generous clean whitespace -->
-            <div class="sidebar-spacer"></div>
-
-            <a href="https://t.me/ReelboxxBot" target="_blank" rel="noopener noreferrer" class="nav-item">
-                <div class="nav-item-left">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-                    <span class="nav-label">Telegram Bot</span>
-                </div>
-            </a>
         </div>
 
         <div class="sidebar-footer">
@@ -1204,6 +1244,17 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Topbar Telegram Bot CTA (Capsule Pill style matching Export Notion) -->
+            <div class="topbar-right">
+                <a href="https://t.me/ReelboxxBot" target="_blank" rel="noopener noreferrer" class="btn-topbar-cta" title="Open Reelbox Bot on Telegram">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z"/>
+                        <path d="M22 2 11 13"/>
+                    </svg>
+                    <span>Telegram Bot</span>
+                </a>
             </div>
         </header>
 
