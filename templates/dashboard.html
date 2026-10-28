@@ -626,67 +626,6 @@
             margin: 0 auto;
         }
 
-        /* List View Mode (Arcade style) */
-        .boxy-grid.list-view {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 1100px;
-        }
-
-        .boxy-grid.list-view .boxy-card {
-            flex-direction: row;
-            align-items: center;
-            min-height: 110px;
-        }
-
-        .boxy-grid.list-view .boxy-preview {
-            width: 160px;
-            height: 100%;
-            border-bottom: none;
-            border-right: 1px solid rgba(255, 255, 255, 0.06);
-            flex-shrink: 0;
-        }
-
-        .boxy-grid.list-view .boxy-content {
-            padding: 12px 18px;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            width: 100%;
-        }
-
-        .boxy-grid.list-view .arcade-meta-section {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .boxy-grid.list-view .arcade-tags-row {
-            margin-bottom: 0;
-        }
-
-        .boxy-grid.list-view .arcade-footer {
-            margin-top: 0;
-            padding-top: 0;
-            border-top: none;
-            flex-shrink: 0;
-        }
-
-        .boxy-grid.list-view .boxy-card.expanded {
-            flex-wrap: wrap;
-        }
-
-        .boxy-grid.list-view .boxy-card.expanded .boxy-content {
-            flex-wrap: wrap;
-        }
-
-        .boxy-grid.list-view .boxy-card.expanded .arcade-takeaways-drawer {
-            width: 100%;
-            flex-basis: 100%;
-            margin-top: 14px;
-        }
-
         /* Card Container (Arcade Elevation) */
         .boxy-card {
             background: #121217;
@@ -994,40 +933,6 @@
             border-color: rgba(244, 63, 94, 0.28);
         }
 
-        /* View Switcher Controls (Arcade Style Grid/List) */
-        .view-switch-group {
-            display: flex;
-            align-items: center;
-            background: #181820;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            padding: 2px;
-            gap: 2px;
-        }
-
-        .view-switch-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .view-switch-btn:hover {
-            color: #fff;
-        }
-
-        .view-switch-btn.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
         /* ── Side Drawer ── */
         .drawer-overlay {
             position: fixed;
@@ -1142,13 +1047,6 @@
                 <div class="nav-item-left">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                     <span class="nav-label">Telegram Bot</span>
-                </div>
-            </a>
-
-            <a href="/case-study" class="nav-item">
-                <div class="nav-item-left">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    <span class="nav-label">Case Study</span>
                 </div>
             </a>
         </div>
@@ -1307,18 +1205,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="topbar-right">
-                <!-- Arcade-style Grid / List View Switcher -->
-                <div class="view-switch-group">
-                    <button class="view-switch-btn active" id="btnViewGrid" onclick="setViewMode('grid')" title="Grid View">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-                    </button>
-                    <button class="view-switch-btn" id="btnViewList" onclick="setViewMode('list')" title="List View">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
-                    </button>
-                </div>
-            </div>
         </header>
 
         <!-- Canvas Container: Boxy Grid -->
@@ -1471,6 +1357,7 @@
 
         // ── BOOTSTRAP ──
         async function init() {
+            localStorage.removeItem('reelbox_view_mode');
             window.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                     e.preventDefault();
@@ -1794,23 +1681,6 @@
             renderBoxyCards();
         }
 
-        let currentViewMode = localStorage.getItem('reelbox_view_mode') || 'grid';
-
-        function setViewMode(mode) {
-            currentViewMode = mode;
-            localStorage.setItem('reelbox_view_mode', mode);
-            const gridBtn = document.getElementById('btnViewGrid');
-            const listBtn = document.getElementById('btnViewList');
-            if (gridBtn && listBtn) {
-                gridBtn.classList.toggle('active', mode === 'grid');
-                listBtn.classList.toggle('active', mode === 'list');
-            }
-            const canvas = document.querySelector('.boxy-grid');
-            if (canvas) {
-                canvas.classList.toggle('list-view', mode === 'list');
-            }
-        }
-
         function formatRelativeTime(dateStr) {
             if (!dateStr) return 'Recently';
             try {
@@ -1866,8 +1736,7 @@
                 return;
             }
 
-            const isList = currentViewMode === 'list';
-            let html = `<div class="boxy-grid ${isList ? 'list-view' : ''}">`;
+            let html = `<div class="boxy-grid">`;
 
             filtered.forEach((r, idx) => {
                 const num = String(idx + 1).padStart(2, '0');
