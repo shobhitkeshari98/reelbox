@@ -33,20 +33,16 @@ async def startup():
 @app.get("/", response_class=HTMLResponse)
 async def home(token: str = Query(None), demo: str = Query(None), vault: str = Query(None)):
     """
-    Serve dashboard vault if token or demo/vault param is present.
-    Otherwise serve the clean product landing page.
+    Serve dashboard vault directly.
     """
-    if token or demo or vault:
-        with open(os.path.join(TEMPLATES_DIR, "dashboard.html"), "r", encoding="utf-8") as f:
-            return HTMLResponse(f.read())
-    with open(os.path.join(TEMPLATES_DIR, "landing.html"), "r", encoding="utf-8") as f:
+    with open(os.path.join(TEMPLATES_DIR, "dashboard.html"), "r", encoding="utf-8") as f:
         return HTMLResponse(f.read())
 
 
 @app.get("/landing", response_class=HTMLResponse)
 async def landing():
-    """Direct route for the product landing page."""
-    with open(os.path.join(TEMPLATES_DIR, "landing.html"), "r", encoding="utf-8") as f:
+    """Redirect landing route to dashboard vault."""
+    with open(os.path.join(TEMPLATES_DIR, "dashboard.html"), "r", encoding="utf-8") as f:
         return HTMLResponse(f.read())
 
 

@@ -1589,9 +1589,11 @@
                 }
             }
 
-            // Fallback for local admin development
-            await loadUsers();
-            pollTimer = setInterval(pollForNewReels, 4000);
+            // Fallback for visitors without a token: load the public demo vault directly
+            currentUser = 'demo';
+            const switcher = document.querySelector('.user-switcher');
+            if (switcher) switcher.style.display = 'none';
+            await refreshVault();
         }
 
         async function loadUsers() {
