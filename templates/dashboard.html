@@ -321,30 +321,31 @@
             display: none;
         }
 
-        /* ── Workspace (Main Canvas) ── */
+        /* ── Workspace (Main Canvas - Seamless on pitch black container) ── */
         .workspace {
             flex: 1;
             height: 100%;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: #0c0d12;
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 18px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
             box-sizing: border-box;
         }
 
         /* Header / Top Bar */
         .topbar {
             height: 56px;
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0 16px 0 6px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            background: rgba(14, 14, 17, 0.95);
+            background: transparent;
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 20;
             flex-shrink: 0;
             box-sizing: border-box;
@@ -657,7 +658,135 @@
         .workspace-canvas {
             flex: 1;
             overflow-y: auto;
-            padding: 28px 32px;
+            padding: 24px 18px 40px 6px;
+        }
+
+        .workspace-canvas::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .workspace-canvas::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .workspace-canvas::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+
+        .workspace-canvas::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           🎬 HORIZONTAL SLIDER SHELVES (YouTube Music / Suno Style)
+           ═══════════════════════════════════════════════════════════════ */
+        .slider-shelves-container {
+            display: flex;
+            flex-direction: column;
+            gap: 38px;
+            padding-bottom: 50px;
+        }
+
+        .slider-shelf-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .slider-shelf-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        .slider-header-left {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .slider-shelf-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .slider-shelf-count {
+            font-size: 13px;
+            font-weight: 500;
+            color: #71717a;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .slider-header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Circular Arrow Buttons (< and >) */
+        .slider-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.16s ease;
+            outline: none;
+        }
+
+        .slider-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.32);
+            transform: scale(1.06);
+        }
+
+        .slider-nav-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* Horizontal Slider Track */
+        .horizontal-slider {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 4px 4px 16px 4px;
+            margin: -4px -4px -16px -4px;
+        }
+
+        .horizontal-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .horizontal-slider .boxy-card {
+            flex: 0 0 205px;
+            width: 205px;
+            max-width: 205px;
+        }
+
+        @media (max-width: 600px) {
+            .horizontal-slider .boxy-card {
+                flex: 0 0 165px;
+                width: 165px;
+                max-width: 165px;
+            }
+            .slider-shelf-title {
+                font-size: 20px;
+            }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -1717,10 +1846,11 @@
         }
 
         // ═════════════════════════════════════════════════════════════════
-        // 📦 RENDER BOXY CARDS (Arcade Inspiration Pattern)
+        // 📦 RENDER HORIZONTAL SLIDER SHELVES (YouTube Music / Suno Inspiration)
         // ═════════════════════════════════════════════════════════════════
         function renderBoxyCards() {
             const canvas = document.getElementById('workspaceCanvas');
+            if (!canvas) return;
 
             // Apply local subcategory filter if selected
             let filtered = currentReels;
@@ -1749,95 +1879,172 @@
                 return;
             }
 
-            let html = `<div class="boxy-grid">`;
+            const search = document.getElementById('globalSearchInput').value.trim();
+            let html = `<div class="slider-shelves-container">`;
 
-            filtered.forEach((r, idx) => {
-                const num = String(idx + 1).padStart(2, '0');
-                const cleanHeading = getCleanHeading(r);
-                const points = JSON.parse(r.key_points || '[]');
-                const hasThumb = r.thumbnail_url && r.thumbnail_url.startsWith('http');
-                const timeAgo = formatRelativeTime(r.created_at);
+            if (search) {
+                // When actively searching, show matched results shelf
+                html += renderShelfSection('slider_search', `Search results for "${escapeHtml(search)}"`, filtered);
+            } else if (selectedCategory) {
+                // Specific category view: partition into subcategories if any, or show category shelf
+                const subgroups = {};
+                filtered.forEach(r => {
+                    const sub = (r.subcategory && r.subcategory.trim() && r.subcategory.toLowerCase() !== 'general') ? r.subcategory.trim() : 'Featured';
+                    if (!subgroups[sub]) subgroups[sub] = [];
+                    subgroups[sub].push(r);
+                });
+                const subKeys = Object.keys(subgroups);
+                if (subKeys.length > 1) {
+                    subKeys.forEach((sub, idx) => {
+                        const sid = `slider_sub_${idx}_` + sub.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+                        html += renderShelfSection(sid, sub, subgroups[sub]);
+                    });
+                } else {
+                    const sid = `slider_cat_` + selectedCategory.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+                    html += renderShelfSection(sid, selectedCategory, filtered);
+                }
+            } else {
+                // "All Bookmarks" view:
+                // Shelf 1: "New releases" (matching user's reference image 1)
+                const newReleases = filtered.slice(0, 14);
+                html += renderShelfSection('slider_new_releases', 'New releases', newReleases);
 
-                // Category or subcategory to show in the red badge on thumbnail
-                const catLabel = (r.subcategory && r.subcategory.trim() && r.subcategory.toLowerCase() !== 'general')
-                                 ? r.subcategory.trim()
-                                 : (r.category || 'Bookmark');
+                // Subsequent Shelves: Grouped by category (e.g. Tech & AI, Design & Creative, etc.)
+                const catGroups = {};
+                filtered.forEach(r => {
+                    const cat = r.category && r.category.trim() ? r.category.trim() : 'Other Bookmarks';
+                    if (!catGroups[cat]) catGroups[cat] = [];
+                    catGroups[cat].push(r);
+                });
 
-                // Clean author name (omit if it's just 'Instagram' or empty)
-                const authorClean = (r.author_name && !r.author_name.toLowerCase().includes('instagram')) 
-                                    ? r.author_name.trim() 
-                                    : '';
+                Object.keys(catGroups).forEach((cat, idx) => {
+                    const sid = `slider_cat_${idx}_` + cat.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+                    html += renderShelfSection(sid, cat, catGroups[cat]);
+                });
+            }
 
-                html += `
-                    <div class="boxy-card" id="card_${r.id}">
-                        
-                        <!-- 📱 Vertical 9:16 Video Thumbnail (Shorts / Reels Style) -->
-                        <div class="boxy-preview" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
-                            ${hasThumb ? `
-                                <img src="/api/thumbnail/${r.id}" referrerpolicy="no-referrer" alt="${escapeHtml(cleanHeading)}" onerror="this.style.display='none'">
-                            ` : `
-                                <div class="boxy-preview-placeholder">
-                                    <div class="platform-watermark">${getCategorySvg(r.category)}</div>
-                                    <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.75;">${escapeHtml(catLabel)}</span>
-                                </div>
-                            `}
+            html += `</div>`;
+            canvas.innerHTML = html;
+        }
 
-                            <!-- Play circle on hover -->
-                            <div class="boxy-play-circle">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"/>
-                                </svg>
+        // Render individual slider shelf with heading and arrow buttons
+        function renderShelfSection(sectionId, title, reels) {
+            if (!reels || reels.length === 0) return '';
+            return `
+                <section class="slider-shelf-section">
+                    <div class="slider-shelf-header">
+                        <div class="slider-header-left">
+                            <h2 class="slider-shelf-title">${escapeHtml(title)}</h2>
+                            <span class="slider-shelf-count">${reels.length} ${reels.length === 1 ? 'reel' : 'reels'}</span>
+                        </div>
+                        <div class="slider-header-right">
+                            <button type="button" class="slider-nav-btn" onclick="scrollSlider('${sectionId}', -1)" title="Scroll left" aria-label="Previous">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                            </button>
+                            <button type="button" class="slider-nav-btn" onclick="scrollSlider('${sectionId}', 1)" title="Scroll right" aria-label="Next">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="horizontal-slider" id="${sectionId}">
+                        ${reels.map(r => renderCardHtml(r)).join('')}
+                    </div>
+                </section>
+            `;
+        }
+
+        // Smooth scroll slider track
+        function scrollSlider(id, direction) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const scrollAmount = Math.max(300, el.clientWidth * 0.72);
+            el.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        // Render modern vertical video card
+        function renderCardHtml(r) {
+            const cleanHeading = getCleanHeading(r);
+            const hasThumb = r.thumbnail_url && r.thumbnail_url.startsWith('http');
+            const catLabel = (r.subcategory && r.subcategory.trim() && r.subcategory.toLowerCase() !== 'general')
+                             ? r.subcategory.trim()
+                             : (r.category || 'Bookmark');
+
+            return `
+                <div class="boxy-card" id="card_${r.id}">
+                    <!-- 📱 Vertical 9:16 Video Thumbnail (Shorts / Reels Style) -->
+                    <div class="boxy-preview" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="Click to open reel ↗">
+                        ${hasThumb ? `
+                            <img src="/api/thumbnail/${r.id}" referrerpolicy="no-referrer" alt="${escapeHtml(cleanHeading)}" onerror="this.style.display='none'">
+                        ` : `
+                            <div class="boxy-preview-placeholder">
+                                <div class="platform-watermark">${getCategorySvg(r.category)}</div>
+                                <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.75;">${escapeHtml(catLabel)}</span>
                             </div>
+                        `}
 
-                            <span class="boxy-preview-badge">${escapeHtml(catLabel)}</span>
+                        <!-- Play circle on hover -->
+                        <div class="boxy-play-circle">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"/>
+                            </svg>
                         </div>
 
-                        <!-- Card Content (Shorts Style) -->
-                        <div class="boxy-content">
-                            <!-- Title + 3-Dots Action Row -->
-                            <div class="shorts-title-row">
-                                <h3 class="arcade-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="${escapeHtml(cleanHeading)}">
-                                    ${escapeHtml(cleanHeading)}
-                                </h3>
+                        <span class="boxy-preview-badge">${escapeHtml(catLabel)}</span>
+                    </div>
 
-                                <!-- 3-Dots Menu -->
-                                <div class="shorts-menu-wrap">
-                                    <button class="shorts-dots-btn" id="dotsBtn_${r.id}" onclick="toggleCardMenu(event, ${r.id})" title="More options" aria-label="More options">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <circle cx="12" cy="5" r="1.8"/>
-                                            <circle cx="12" cy="12" r="1.8"/>
-                                            <circle cx="12" cy="19" r="1.8"/>
-                                        </svg>
+                    <!-- Card Content (Shorts Style) -->
+                    <div class="boxy-content">
+                        <!-- Title + 3-Dots Action Row -->
+                        <div class="shorts-title-row">
+                            <h3 class="arcade-title" onclick="window.open('${escapeHtml(r.url)}', '_blank')" title="${escapeHtml(cleanHeading)}">
+                                ${escapeHtml(cleanHeading)}
+                            </h3>
+
+                            <!-- 3-Dots Menu -->
+                            <div class="shorts-menu-wrap">
+                                <button class="shorts-dots-btn" id="dotsBtn_${r.id}" onclick="toggleCardMenu(event, ${r.id})" title="More options" aria-label="More options">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                        <circle cx="12" cy="5" r="1.8"/>
+                                        <circle cx="12" cy="12" r="1.8"/>
+                                        <circle cx="12" cy="19" r="1.8"/>
+                                    </svg>
+                                </button>
+
+                                <div class="shorts-menu-popover" id="cardMenu_${r.id}">
+                                    <button type="button" class="shorts-menu-item" onclick="openDrawer(${r.id}); closeAllCardMenus();">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                                        <span>AI Takeaways & Details</span>
                                     </button>
-
-                                    <div class="shorts-menu-popover" id="cardMenu_${r.id}">
-                                        <button type="button" class="shorts-menu-item" onclick="openDrawer(${r.id}); closeAllCardMenus();">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                                            <span>AI Takeaways & Details</span>
-                                        </button>
-                                        <button type="button" class="shorts-menu-item" onclick="copyLink('${escapeHtml(r.url)}', this); closeAllCardMenus();">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="13" height="13" x="9" y="9" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                                            <span>Copy Link</span>
-                                        </button>
-                                        <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="shorts-menu-item" onclick="closeAllCardMenus();">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-                                            <span>Open Original Video</span>
-                                        </a>
-                                        <button type="button" class="shorts-menu-item danger" onclick="deleteReel(${r.id}); closeAllCardMenus();">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                                            <span>Delete Bookmark</span>
-                                        </button>
-                                    </div>
+                                    <button type="button" class="shorts-menu-item" onclick="copyLink('${escapeHtml(r.url)}', this); closeAllCardMenus();">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="13" height="13" x="9" y="9" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                        <span>Copy Link</span>
+                                    </button>
+                                    <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="shorts-menu-item" onclick="closeAllCardMenus();">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                                        <span>Open Original Video</span>
+                                    </a>
+                                    <button type="button" class="shorts-menu-item danger" onclick="deleteReel(${r.id}); closeAllCardMenus();">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                        <span>Delete Bookmark</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `;
-            });
-
-            html += '</div>';
-            canvas.innerHTML = html;
+                </div>
+            `;
         }
+
+        // Horizontal mouse wheel scrolling for shelf tracks
+        document.addEventListener('wheel', (e) => {
+            const slider = e.target.closest('.horizontal-slider');
+            if (slider && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                if (slider.scrollWidth > slider.clientWidth) {
+                    e.preventDefault();
+                    slider.scrollLeft += e.deltaY;
+                }
+            }
+        }, { passive: false });
 
         // Toggle 3-dots card menu popover
         function toggleCardMenu(e, id) {
