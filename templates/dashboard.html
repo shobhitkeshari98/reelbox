@@ -703,8 +703,7 @@
 
         .slider-header-left {
             display: flex;
-            align-items: baseline;
-            gap: 12px;
+            align-items: center;
         }
 
         .slider-shelf-title {
@@ -714,13 +713,6 @@
             color: #ffffff;
             margin: 0;
             line-height: 1.2;
-        }
-
-        .slider-shelf-count {
-            font-size: 13px;
-            font-weight: 500;
-            color: #71717a;
-            font-family: 'JetBrains Mono', monospace;
         }
 
         .slider-header-right {
@@ -761,11 +753,12 @@
             display: flex;
             gap: 16px;
             overflow-x: auto;
+            overflow-y: hidden;
+            align-items: flex-start;
             scroll-behavior: smooth;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            padding: 4px 4px 16px 4px;
-            margin: -4px -4px -16px -4px;
+            padding: 4px 2px 14px 2px;
         }
 
         .horizontal-slider::-webkit-scrollbar {
@@ -1935,7 +1928,6 @@
                     <div class="slider-shelf-header">
                         <div class="slider-header-left">
                             <h2 class="slider-shelf-title">${escapeHtml(title)}</h2>
-                            <span class="slider-shelf-count">${reels.length} ${reels.length === 1 ? 'reel' : 'reels'}</span>
                         </div>
                         <div class="slider-header-right">
                             <button type="button" class="slider-nav-btn" onclick="scrollSlider('${sectionId}', -1)" title="Scroll left" aria-label="Previous">
@@ -2034,17 +2026,6 @@
                 </div>
             `;
         }
-
-        // Horizontal mouse wheel scrolling for shelf tracks
-        document.addEventListener('wheel', (e) => {
-            const slider = e.target.closest('.horizontal-slider');
-            if (slider && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                if (slider.scrollWidth > slider.clientWidth) {
-                    e.preventDefault();
-                    slider.scrollLeft += e.deltaY;
-                }
-            }
-        }, { passive: false });
 
         // Toggle 3-dots card menu popover
         function toggleCardMenu(e, id) {
