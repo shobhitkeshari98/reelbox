@@ -35,7 +35,7 @@
         }
 
         .cs-nav {
-            max-width: 860px;
+            max-width: 880px;
             margin: 0 auto;
             padding: 24px 0;
             display: flex;
@@ -57,7 +57,7 @@
         .btn-back:hover { color: #fff; }
 
         .cs-container {
-            max-width: 860px;
+            max-width: 880px;
             margin: 40px auto 0;
         }
 
@@ -78,56 +78,122 @@
             line-height: 1.18;
             letter-spacing: -1.2px;
             color: #fff;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .subtitle {
             font-size: 18px;
             color: var(--text-muted);
-            margin-bottom: 32px;
+            margin-bottom: 30px;
             line-height: 1.5;
         }
 
-        /* 8-Second Checklist: Metric Callout At Top */
-        .metrics-top-grid {
+        /* Hero visual frame */
+        .hero-visual-frame {
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-medium);
+            background: #0d0e15;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin-bottom: 44px;
+            position: relative;
+        }
+        .hero-visual-frame img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+        .hero-caption {
+            padding: 12px 18px;
+            background: rgba(18, 19, 26, 0.95);
+            border-top: 1px solid var(--border-subtle);
+            font-size: 12.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* 2-COLUMN OVERVIEW SECTION (Matches User Inspiration Screenshot) */
+        .overview-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 14px;
-            margin-bottom: 40px;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+            padding: 10px 0 44px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 50px;
         }
-        .metric-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 18px 20px;
+        @media (max-width: 768px) {
+            .overview-section {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
         }
-        .metric-number {
-            font-size: 28px;
+
+        /* Left column */
+        .overview-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .meta-group .meta-title {
+            font-size: 13.5px;
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .meta-group .meta-val {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.45;
+        }
+        .meta-group .meta-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+            line-height: 1.45;
+        }
+
+        /* Right column */
+        .overview-content {
+            display: flex;
+            flex-direction: column;
+        }
+        .overview-text {
+            font-size: 15.5px;
+            color: #cbd5e1;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+        .overview-text:last-of-type {
+            margin-bottom: 32px;
+        }
+
+        /* Metrics row in right column */
+        .overview-metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 32px;
+            margin-top: 8px;
+        }
+        .metric-stat-item .metric-val {
+            font-size: 38px;
             font-weight: 800;
-            color: var(--accent-bright);
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
+            color: #fff;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 6px;
         }
-        .metric-label {
-            font-size: 12px;
+        .metric-stat-item .metric-label {
+            font-size: 13.5px;
             color: var(--text-muted);
             line-height: 1.4;
         }
 
-        .meta-strip {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 16px 20px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            margin-bottom: 48px;
-            font-size: 13px;
-        }
-        .meta-strip div strong { color: #fff; margin-right: 4px; }
-        .meta-strip div span { color: var(--text-muted); }
-
+        /* Headers */
         h2 {
             font-size: 22px;
             font-weight: 700;
@@ -148,21 +214,6 @@
             padding: 3px 8px;
             border-radius: 4px;
             font-weight: 600;
-        }
-
-        h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-            margin: 28px 0 12px;
-            line-height: 1.35;
-        }
-
-        p {
-            font-size: 15.5px;
-            color: #cbd5e1;
-            margin-bottom: 16px;
-            line-height: 1.65;
         }
 
         .decision-block {
@@ -336,43 +387,73 @@
             How I designed and shipped an AI-driven video vault that extracts actionable takeaways in under 3 seconds, cutting bookmark retrieval time by 96%.
         </p>
 
-        <!-- Top Results (The 8-Second Rule: Results visible immediately) -->
-        <div class="metrics-top-grid">
-            <div class="metric-card">
-                <div class="metric-number">9.2s</div>
-                <div class="metric-label"><strong>Retrieval Time:</strong> Down from 4m 12s baseline on native saves (96% drop).</div>
+        <!-- HERO COVER VISUAL -->
+        <div class="hero-visual-frame">
+            <div style="background: linear-gradient(180deg, #161722 0%, #0c0d14 100%); padding: 50px 20px; text-align: center;">
+                <div style="max-width: 680px; margin: 0 auto; border: 1px solid var(--border-medium); border-radius: 12px; background: #000; padding: 18px; box-shadow: 0 30px 60px rgba(0,0,0,0.8);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                        <span style="font-weight:700; font-size:13px; color:#fff;">📦 Reelbox 2.0 — Production Vault</span>
+                        <span style="font-size:11px; color:#94a3b8; font-family:'JetBrains Mono', monospace;">LIVE BUILD</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; opacity: 0.9;">
+                        <div style="aspect-ratio:9/16; background: #161722; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"></div>
+                        <div style="aspect-ratio:9/16; background: #161722; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"></div>
+                        <div style="aspect-ratio:9/16; background: #161722; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"></div>
+                        <div style="aspect-ratio:9/16; background: #161722; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"></div>
+                    </div>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-number">58%</div>
-                <div class="metric-label"><strong>30-Day Revisit Rate:</strong> Up from 11% industry baseline across 65 beta users.</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-number">1.4s</div>
-                <div class="metric-label"><strong>Ingestion Velocity:</strong> 1-tap Telegram save with 99.4% AI categorization accuracy.</div>
+            <div class="hero-caption">
+                <span><strong>Hero Visual:</strong> Reelbox pitch-black canvas with horizontal shelves, 9:16 vertical cards, and #6E60EE branding.</span>
+                <span style="font-family:'JetBrains Mono', monospace;">1:1 Production Capture</span>
             </div>
         </div>
 
-        <div class="meta-strip">
-            <div><strong>Role:</strong> <span>Solo Product Designer (End-to-End)</span></div>
-            <div><strong>Team:</strong> <span>1 Full-Stack Engineer, 1 AI Engineer</span></div>
-            <div><strong>Timeline:</strong> <span>4 Weeks (Design Sprint to Shipped Prod)</span></div>
-            <div><strong>Live App:</strong> <span>reelbox-8krs.onrender.com</span></div>
-        </div>
+        <!-- 2-COLUMN SECTION (EXACT LAYOUT FROM USER'S INSPIRATION SCREENSHOT) -->
+        <section class="overview-section">
+            <!-- Left Column: Timeline, Role, Team -->
+            <div class="overview-meta">
+                <div class="meta-group">
+                    <div class="meta-title">Timeline</div>
+                    <div class="meta-val">March – April 2026 (4 weeks)</div>
+                </div>
+                <div class="meta-group">
+                    <div class="meta-title">My role</div>
+                    <div class="meta-val">Lead Product Designer</div>
+                    <div class="meta-sub">(UX Architecture, GenAI Interaction Design, Prototyping, and Production Frontend Code)</div>
+                </div>
+                <div class="meta-group">
+                    <div class="meta-title">Team</div>
+                    <div class="meta-val">1x Full-Stack Engineer</div>
+                    <div class="meta-sub">1x AI Engineer</div>
+                </div>
+            </div>
 
-        <!-- 1. PROJECT INTRO -->
-        <h2><span class="section-tag">01</span> Project Intro</h2>
-        <p>
-            <strong>Reelbox</strong> is an AI-powered bookmarking vault that helps product designers, engineers, and digital creators turn chaotic saved short-form videos into an organized, instant-retrieval second brain. The challenge was solving the "bookmark black hole" — 84% of reels saved on Instagram and YouTube are never revisited because short videos lack text transcripts, titles are clickbait, and native bookmarking has zero searchability or categorization.
-        </p>
+            <!-- Right Column: Problem story, 0 to 1 leadership, Metrics -->
+            <div class="overview-content">
+                <p class="overview-text">
+                    Video bookmarking was broken. Game-changing Figma plugins, AI tools, and code tricks buried in Instagram and YouTube bookmark black holes. Thumbnails with zero context. Scrubbing through 45-second clickbait reels just to find a single tool name or command. 84% of saved reels were never opened again. I designed Reelbox to turn mindless video saving into an instant-retrieval second brain.
+                </p>
+                <p class="overview-text">
+                    I led the 0 to 1 design of Reelbox—from conversational Telegram ingestion and Gemini prompt UX to horizontal shelf architecture and production-ready frontend code.
+                </p>
 
-        <!-- 2. MY ROLE -->
-        <h2><span class="section-tag">02</span> My Role</h2>
-        <p>
-            I was the lead product designer responsible for end-to-end UX architecture, GenAI interaction design, and visual craft across mobile and desktop surfaces. I worked alongside a full-stack engineer and an AI engineer, and owned the problem discovery, information architecture, conversational ingestion flows, prompt synthesis UX, and final production CSS/JS execution.
-        </p>
+                <!-- Metrics Row -->
+                <div class="overview-metrics-row">
+                    <div class="metric-stat-item">
+                        <div class="metric-val">96% faster</div>
+                        <div class="metric-label">Retrieval time (4m 12s → 9.2s)</div>
+                    </div>
+                    <div class="metric-stat-item">
+                        <div class="metric-val">58%</div>
+                        <div class="metric-label">30-day revisit rate (vs. 11% native)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- 3. KEY DESIGN DECISIONS -->
-        <h2><span class="section-tag">03</span> Key Design Decisions</h2>
+        <h2><span class="section-tag">01</span> Key Design Decisions</h2>
 
         <!-- Decision 1 -->
         <div class="decision-block">
@@ -444,7 +525,7 @@
         </div>
 
         <!-- 4. OUTCOME -->
-        <h2><span class="section-tag">04</span> Outcome</h2>
+        <h2><span class="section-tag">02</span> Outcome</h2>
         <div class="outcome-box">
             <ul>
                 <li><strong>Retrieval time dropped from 4m 12s to 9.2s (96% reduction)</strong> when locating a specific saved tip or tool compared to native saves across 40 user test sessions over 4 weeks.</li>
